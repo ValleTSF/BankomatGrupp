@@ -20,6 +20,7 @@ public class Repository {
         }
     }
 
+
     public Map<Integer, Credentials> mapCredentialsFromDb() {
         Map<Integer, Credentials> credentialsHashMap = new HashMap<>();
         String sqlQuery = "select * from bankomat.credentials";
