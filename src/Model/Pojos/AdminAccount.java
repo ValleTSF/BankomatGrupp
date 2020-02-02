@@ -1,25 +1,25 @@
-package Model;
+package Model.Pojos;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class AdminAccount {
     private int id;
     private BankUser bankUser;
     private Credentials credentials;
-    private LocalDateTime createdOn;
-    private LocalDateTime lastUpdated;
+    private Timestamp createdOn;
+    private Timestamp lastUpdated;
 
     public AdminAccount() {
     }
 
-    public AdminAccount(BankUser bankUser, Credentials credentials, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public AdminAccount(BankUser bankUser, Credentials credentials, Timestamp createdOn, Timestamp lastUpdated) {
         this.bankUser = bankUser;
         this.credentials = credentials;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
 
-    public AdminAccount(int id, BankUser bankUser, Credentials credentials, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public AdminAccount(int id, BankUser bankUser, Credentials credentials, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.bankUser = bankUser;
         this.credentials = credentials;
@@ -39,11 +39,11 @@ public class AdminAccount {
         return credentials;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public Timestamp getCreatedOn() {
         return createdOn;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public Timestamp getLastUpdated() {
         return lastUpdated;
     }
 }

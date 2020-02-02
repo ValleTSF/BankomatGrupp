@@ -1,6 +1,6 @@
-package Model;
+package Model.Pojos;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Transactions {
     private int id;
@@ -8,13 +8,13 @@ public class Transactions {
     private int amount;
     private Loan loan;
     private Savings savings;
-    private LocalDateTime createdOn;
-    private LocalDateTime lastUpdated;
+    private Timestamp createdOn;
+    private Timestamp lastUpdated;
 
     public Transactions() {
     }
 
-    public Transactions(UserAccount userAccount, int amount, Loan loan, Savings savings, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public Transactions(UserAccount userAccount, int amount, Loan loan, Savings savings, Timestamp createdOn, Timestamp lastUpdated) {
         this.userAccount = userAccount;
         this.amount = amount;
         this.loan = loan;
@@ -23,7 +23,7 @@ public class Transactions {
         this.lastUpdated = lastUpdated;
     }
 
-    public Transactions(int id, UserAccount userAccount, int amount, Loan loan, Savings savings, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public Transactions(int id, UserAccount userAccount, int amount, Loan loan, Savings savings, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.userAccount = userAccount;
         this.amount = amount;
@@ -53,11 +53,11 @@ public class Transactions {
         return savings;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public Timestamp getCreatedOn() {
         return createdOn;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public Timestamp getLastUpdated() {
         return lastUpdated;
     }
 }

@@ -1,25 +1,25 @@
-package Model;
+package Model.Pojos;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Rate {
     private int id;
     private int rate;
     private String rateType;
-    private LocalDateTime createdOn;
-    private LocalDateTime lastUpdated;
+    private Timestamp createdOn;
+    private Timestamp lastUpdated;
 
     public Rate() {
     }
 
-    public Rate(int rate, String rateType, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public Rate(int rate, String rateType, Timestamp createdOn, Timestamp lastUpdated) {
         this.rate = rate;
         this.rateType = rateType;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
 
-    public Rate(int id, int rate, String rateType, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public Rate(int id, int rate, String rateType, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.rate = rate;
         this.rateType = rateType;
@@ -39,11 +39,11 @@ public class Rate {
         return rateType;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public Timestamp getCreatedOn() {
         return createdOn;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public Timestamp getLastUpdated() {
         return lastUpdated;
     }
 }

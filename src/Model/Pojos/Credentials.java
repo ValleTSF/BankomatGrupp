@@ -1,26 +1,26 @@
-package Model;
+package Model.Pojos;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Credentials {
     private int id;
     private String adminUsername;
     private String adminPassword;
-    private LocalDateTime createdOn;
-    private LocalDateTime lastUpdated;
+    private Timestamp createdOn;
+    private Timestamp lastUpdated;
 
 
     public Credentials() {
     }
 
-    public Credentials(String adminUsername, String adminPassword, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public Credentials(String adminUsername, String adminPassword, Timestamp createdOn, Timestamp lastUpdated) {
         this.adminUsername = adminUsername;
         this.adminPassword = adminPassword;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
 
-    public Credentials(int id, String adminUsername, String adminPassword, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public Credentials(int id, String adminUsername, String adminPassword, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.adminUsername = adminUsername;
         this.adminPassword = adminPassword;
@@ -40,11 +40,11 @@ public class Credentials {
         return adminPassword;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public Timestamp getCreatedOn() {
         return createdOn;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public Timestamp getLastUpdated() {
         return lastUpdated;
     }
 }

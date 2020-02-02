@@ -1,20 +1,20 @@
-package Model;
+package Model.Pojos;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class BankUser {
     private int id;
     private String firstName;
     private String lastName;
     private TypeOfUser typeOfUser;
-    private LocalDateTime createdOn;
-    private LocalDateTime lastUpdated;
+    private Timestamp createdOn;
+    private Timestamp lastUpdated;
 
 
     public BankUser() {
     }
 
-    public BankUser(String firstName, String lastName, TypeOfUser typeOfUser, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public BankUser(String firstName, String lastName, TypeOfUser typeOfUser, Timestamp createdOn, Timestamp lastUpdated) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.typeOfUser = typeOfUser;
@@ -22,7 +22,7 @@ public class BankUser {
         this.lastUpdated = lastUpdated;
     }
 
-    public BankUser(int id, String firstName, String lastName, TypeOfUser typeOfUser, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+    public BankUser(int id, String firstName, String lastName, TypeOfUser typeOfUser, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,11 +47,11 @@ public class BankUser {
         return typeOfUser;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public Timestamp getCreatedOn() {
         return createdOn;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public Timestamp getLastUpdated() {
         return lastUpdated;
     }
 }
