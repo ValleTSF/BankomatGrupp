@@ -11,6 +11,18 @@ public class Loan {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+    public Loan() {
+    }
+
+    public Loan(UserAccount userAccount, int amount, int amountPaid, Rate rate, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.userAccount = userAccount;
+        this.amount = amount;
+        this.amountPaid = amountPaid;
+        this.rate = rate;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public Loan(int id, UserAccount userAccount, int amount, int amountPaid, Rate rate, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.userAccount = userAccount;

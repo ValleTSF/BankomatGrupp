@@ -10,6 +10,17 @@ public class Savings {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+    public Savings() {
+    }
+
+    public Savings(UserAccount userAccount, int amount, Rate rate, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.userAccount = userAccount;
+        this.amount = amount;
+        this.rate = rate;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public Savings(int id, UserAccount userAccount, int amount, Rate rate, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.userAccount = userAccount;

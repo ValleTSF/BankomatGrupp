@@ -9,6 +9,16 @@ public class UserAccount {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+    public UserAccount() {
+    }
+
+    public UserAccount(BankUser bankUser, Credentials credentials, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.bankUser = bankUser;
+        this.credentials = credentials;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public UserAccount(int id, BankUser bankUser, Credentials credentials, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.bankUser = bankUser;

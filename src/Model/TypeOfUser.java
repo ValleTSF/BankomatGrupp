@@ -8,6 +8,15 @@ public class TypeOfUser {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+    public TypeOfUser() {
+    }
+
+    public TypeOfUser(String userType, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.userType = userType;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public TypeOfUser(int id, String userType, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.userType = userType;

@@ -9,6 +9,16 @@ public class Rate {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+    public Rate() {
+    }
+
+    public Rate(int rate, String rateType, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.rate = rate;
+        this.rateType = rateType;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public Rate(int id, int rate, String rateType, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.rate = rate;

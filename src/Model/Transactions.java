@@ -11,6 +11,18 @@ public class Transactions {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+    public Transactions() {
+    }
+
+    public Transactions(UserAccount userAccount, int amount, Loan loan, Savings savings, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.userAccount = userAccount;
+        this.amount = amount;
+        this.loan = loan;
+        this.savings = savings;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public Transactions(int id, UserAccount userAccount, int amount, Loan loan, Savings savings, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.userAccount = userAccount;

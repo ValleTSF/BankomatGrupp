@@ -10,6 +10,18 @@ public class BankUser {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+
+    public BankUser() {
+    }
+
+    public BankUser(String firstName, String lastName, TypeOfUser typeOfUser, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.typeOfUser = typeOfUser;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public BankUser(int id, String firstName, String lastName, TypeOfUser typeOfUser, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.firstName = firstName;

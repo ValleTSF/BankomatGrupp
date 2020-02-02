@@ -9,6 +9,17 @@ public class Credentials {
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
 
+
+    public Credentials() {
+    }
+
+    public Credentials(String adminUsername, String adminPassword, LocalDateTime createdOn, LocalDateTime lastUpdated) {
+        this.adminUsername = adminUsername;
+        this.adminPassword = adminPassword;
+        this.createdOn = createdOn;
+        this.lastUpdated = lastUpdated;
+    }
+
     public Credentials(int id, String adminUsername, String adminPassword, LocalDateTime createdOn, LocalDateTime lastUpdated) {
         this.id = id;
         this.adminUsername = adminUsername;
