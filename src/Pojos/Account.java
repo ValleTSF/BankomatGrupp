@@ -1,32 +1,29 @@
-package pojov2;
+package Pojos;
 
 import java.sql.Timestamp;
 
-public class Account_Balance {
-
+public class Account {
     private int id;
-    private Account user_id;
-    private int amount;
-    private Rate rate_id;
+    private User user_id;
+    private Account_Type account_type_id;
     private Timestamp createdOn;
     private Timestamp lastUpdated;
 
-    public Account_Balance() {
+    public Account() {
     }
 
-    public Account_Balance(Account user_id, int amount, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
+
+    public Account(User user_id, Account_Type account_type_id, Timestamp createdOn, Timestamp lastUpdated) {
         this.user_id = user_id;
-        this.amount = amount;
-        this.rate_id = rate_id;
+        this.account_type_id = account_type_id;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
 
-    public Account_Balance(int id, Account user_id, int amount, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
+    public Account(int id, User user_id, Account_Type account_type_id, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.user_id = user_id;
-        this.amount = amount;
-        this.rate_id = rate_id;
+        this.account_type_id = account_type_id;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
@@ -39,28 +36,20 @@ public class Account_Balance {
         this.id = id;
     }
 
-    public Account getUser_id() {
+    public User getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Account user_id) {
+    public void setUser_id(User user_id) {
         this.user_id = user_id;
     }
 
-    public int getAmount() {
-        return amount;
+    public Account_Type getAccount_type_id() {
+        return account_type_id;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public Rate getRate_id() {
-        return rate_id;
-    }
-
-    public void setRate_id(Rate rate_id) {
-        this.rate_id = rate_id;
+    public void setAccount_type_id(Account_Type account_type_id) {
+        this.account_type_id = account_type_id;
     }
 
     public Timestamp getCreatedOn() {

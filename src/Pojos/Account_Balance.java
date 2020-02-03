@@ -1,34 +1,31 @@
-package pojov2;
+package Pojos;
 
 import java.sql.Timestamp;
 
-public class Account_Loan {
+public class Account_Balance {
 
     private int id;
-    private Account account_id;
+    private Account user_id;
     private int amount;
-    private int amount_paid;
     private Rate rate_id;
     private Timestamp createdOn;
     private Timestamp lastUpdated;
 
-    public Account_Loan() {
+    public Account_Balance() {
     }
 
-    public Account_Loan(Account account_id, int amount, int amount_paid, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
-        this.account_id = account_id;
+    public Account_Balance(Account user_id, int amount, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
+        this.user_id = user_id;
         this.amount = amount;
-        this.amount_paid = amount_paid;
         this.rate_id = rate_id;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
 
-    public Account_Loan(int id, Account account_id, int amount, int amount_paid, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
+    public Account_Balance(int id, Account user_id, int amount, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
-        this.account_id = account_id;
+        this.user_id = user_id;
         this.amount = amount;
-        this.amount_paid = amount_paid;
         this.rate_id = rate_id;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
@@ -42,12 +39,12 @@ public class Account_Loan {
         this.id = id;
     }
 
-    public Account getAccount_id() {
-        return account_id;
+    public Account getUser_id() {
+        return user_id;
     }
 
-    public void setAccount_id(Account account_id) {
-        this.account_id = account_id;
+    public void setUser_id(Account user_id) {
+        this.user_id = user_id;
     }
 
     public int getAmount() {
@@ -56,14 +53,6 @@ public class Account_Loan {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public int getAmount_paid() {
-        return amount_paid;
-    }
-
-    public void setAmount_paid(int amount_paid) {
-        this.amount_paid = amount_paid;
     }
 
     public Rate getRate_id() {
