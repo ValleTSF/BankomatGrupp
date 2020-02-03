@@ -1,10 +1,14 @@
 package View;
 
+import Controller.*;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
-public class ViewGui extends JFrame implements ActionListener{
+public class ViewGui extends JFrame implements ActionListener {
+    Controller cont = new Controller(this);
     JButton login;
     JButton logOut;
     JButton CheckBalance;
@@ -72,11 +76,22 @@ public class ViewGui extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == login) {
-            add(choicePannel);
-            setTitle("Customer choice");
-            loginpanel.setVisible(false);
-            choicePannel.setVisible(true);
+            try {
+                if (cont.getAccountByString(txuser.getText(), pass.getText()) > 0) {
+                    add(choicePannel);
+                    setTitle("Customer choice");
+                    loginpanel.setVisible(false);
+                    choicePannel.setVisible(true);
+
+                } else
+                    JOptionPane.showMessageDialog(null, "kund finns inte");
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
+
+
         if (e.getSource() == logOut) {
             add(loginpanel);
             setTitle("Login Customer");
@@ -86,10 +101,3 @@ public class ViewGui extends JFrame implements ActionListener{
     }
 
 }
-
-
-
-
-
-
-

@@ -1,16 +1,21 @@
 package Model;
 
+
 import pojov2.*;
+
+
+import java.util.HashMap;
+import java.util.Map;
 
 import java.io.FileInputStream;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
+
 
 public class Repository {
 
     private Properties pro = new Properties();
+
 
     public Repository() {
         try {
@@ -32,10 +37,10 @@ public class Repository {
             while (rs.next()) {
                 userHashMap.put(rs.getInt("id"),
                         new User(rs.getString("first_name"),
-                                 rs.getString("last_name"),
-                                 rs.getString("email"),
-                                 rs.getTimestamp("createdOn"),
-                                 rs.getTimestamp("lastUpdated")));
+                                rs.getString("last_name"),
+                                rs.getString("email"),
+                                rs.getTimestamp("createdOn"),
+                                rs.getTimestamp("lastUpdated")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,7 +55,7 @@ public class Repository {
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              Statement stmt = con.createStatement()) {
-             ResultSet rs = stmt.executeQuery(sqlQuery);
+            ResultSet rs = stmt.executeQuery(sqlQuery);
 
             while (rs.next()) {
                 rateHashMap.put(rs.getInt("id"),
@@ -122,7 +127,7 @@ public class Repository {
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              Statement stmt = con.createStatement()) {
-             ResultSet rs = stmt.executeQuery(sqlQuery);
+            ResultSet rs = stmt.executeQuery(sqlQuery);
 
             while (rs.next()) {
                 accountLoanHashMap.put(rs.getInt("id"),
@@ -219,6 +224,26 @@ public class Repository {
         return transactionsHashMap;
     }
 
+    public int verifyCredentials(String user_name, String user_password) throws SQLException {
+        ResultSet rs = null;
+        String query = "call sp_verifyCredentials(?,?,?)";
+
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement stm = con.prepareCall(query)) {
+            stm.setString(1, user_name);
+            stm.setString(2, user_password);
+            stm.execute();
+            stm.getInt(3);
+            return stm.getInt(user_id);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return 0;
+    }
 
 
     public static void main(String[] args) throws SQLException {
