@@ -1,6 +1,6 @@
-package Model;
+package Model.Repository;
 
-import pojov2.*;
+import Pojos.*;
 
 import java.io.FileInputStream;
 import java.sql.*;
@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class Repository {
+public class MapRepository {
 
     private Properties pro = new Properties();
 
-    public Repository() {
+    public MapRepository() {
         try {
             pro.load(new FileInputStream("src\\SQL-Info"));
         } catch (Exception e) {
@@ -220,9 +220,8 @@ public class Repository {
     }
 
 
-
     public static void main(String[] args) throws SQLException {
-        Repository r = new Repository();
+        MapRepository r = new MapRepository();
 
     }
 

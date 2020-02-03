@@ -1,7 +1,9 @@
 package Model;
 
 
+import Model.Repository.MapRepository;
+
 public class Model {
-    Repository rep = new Repository();
+    MapRepository rep = new MapRepository();
 
 }
