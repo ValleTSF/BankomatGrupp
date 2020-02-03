@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class ViewGui extends JFrame implements ActionListener {
-    Controller cont = new Controller(this);
+    Controller cont;
     JButton login;
     JButton logOut;
     JButton CheckBalance;
@@ -16,13 +16,12 @@ public class ViewGui extends JFrame implements ActionListener {
     JButton withdrawal;
     JPanel loginpanel;
     JPanel choicePannel;
-    JTextField txuser;
     JTextField pass;
-    JLabel username;
     JLabel password;
 
     public ViewGui() {
         super("Login Customer");
+        cont = new Controller(this);
 
         loginpanel = new JPanel();
         choicePannel = new JPanel();
@@ -32,27 +31,21 @@ public class ViewGui extends JFrame implements ActionListener {
         checkLoan = new JButton("check Loan");
         withdrawal = new JButton("withdrawal");
         logOut = new JButton("Log out");
-        txuser = new JTextField(15);
         pass = new JPasswordField(15);
-        username = new JLabel("User - ");
-        password = new JLabel("Pass - ");
+        password = new JLabel("PIN - ");
 
         setSize(300, 200);
         setLocation(500, 280);
         loginpanel.setLayout(null);
 
 
-        txuser.setBounds(70, 30, 150, 20);
         pass.setBounds(70, 65, 150, 20);
         login.setBounds(110, 100, 80, 20);
-        username.setBounds(20, 28, 80, 20);
         password.setBounds(20, 63, 80, 20);
         login.addActionListener(this);
         logOut.addActionListener(this);
         loginpanel.add(login);
-        loginpanel.add(txuser);
         loginpanel.add(pass);
-        loginpanel.add(username);
         loginpanel.add(password);
 
         choicePannel.add(CheckBalance);
@@ -77,7 +70,7 @@ public class ViewGui extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == login) {
             try {
-                if (cont.getAccountByString(txuser.getText(), pass.getText()) > 0) {
+                if (cont.getAccountByString(pass.getText()) > 0) {
                     add(choicePannel);
                     setTitle("Customer choice");
                     loginpanel.setVisible(false);

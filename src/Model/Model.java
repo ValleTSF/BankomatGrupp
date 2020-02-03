@@ -1,9 +1,16 @@
 package Model;
 
 
-import Model.Repository.MapRepository;
+import Model.Repository.*;
+
+import java.sql.SQLException;
 
 public class Model {
-    MapRepository rep = new MapRepository();
+    SPSRepository rep = new SPSRepository();
+
+
+    public int returnAccountID(String password) throws SQLException {
+        return rep.callSpVerifyCredentialsPasswordFromDB(password);
+    }
 
 }

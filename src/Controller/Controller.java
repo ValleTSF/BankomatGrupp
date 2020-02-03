@@ -1,15 +1,26 @@
 package Controller;
-import Model.Repository.MapRepository;
+import Model.Repository.*;
 import Model.Model;
+import View.ViewGui;
 
-import javax.swing.text.View;
+import java.sql.SQLException;
 
 
 public class Controller {
 
-    private View view;
-    private Model model;
-    private MapRepository repo;
+    private ViewGui view;
+    private Model model = new Model();
+
+    public Controller(ViewGui view){
+        this.view = view;
+    }
+
+    public int getAccountByString(String password) throws SQLException {
+        return model.returnAccountID(password);
+
+
+    }
+
 
 }
 
