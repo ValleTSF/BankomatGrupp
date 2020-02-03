@@ -73,13 +73,13 @@ public class ViewGui extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == login) {
             add(choicePannel);
-            setTitle("Login Customer");
+            setTitle("Customer choice");
             loginpanel.setVisible(false);
             choicePannel.setVisible(true);
         }
         if (e.getSource() == logOut) {
             add(loginpanel);
-            setTitle("choice Customer");
+            setTitle("Login Customer");
             loginpanel.setVisible(true);
             choicePannel.setVisible(false);
         }

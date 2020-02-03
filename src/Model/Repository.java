@@ -221,7 +221,10 @@ public class Repository {
 
 
 
+    public static void main(String[] args) throws SQLException {
+        Repository r = new Repository();
 
+    }
 
 
 }

@@ -1,2 +1,3 @@
 login = root
 password = Password1
+connectionURL = jdbc:mysql://35.228.199.197:3306/bankomat?allowPublicKeyRetrieval=true&useSSL=FALSE&serverTimezone=CET
