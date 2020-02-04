@@ -23,6 +23,7 @@ public class ViewGui extends JFrame implements ActionListener {
     JLabel password;
     JLabel Amount;
     JTextField txtAmount;
+    JTextArea showResult;
     int kundId;
 
     public ViewGui() {
@@ -32,7 +33,7 @@ public class ViewGui extends JFrame implements ActionListener {
 
         loginpanel = new JPanel();
         choicePannel = new JPanel();
-        checkBalancePanel = new JPanel();
+        checkBalancePanel = new JPanel(new FlowLayout());
         add(loginpanel);
         login = new JButton("Login");
         Ok = new JButton("OK");
@@ -44,6 +45,7 @@ public class ViewGui extends JFrame implements ActionListener {
         password = new JLabel("PIN - ");
         txtAmount = new JTextField(15);
         Amount = new JLabel("Amount - ");
+        showResult = new JTextArea();
 
         setSize(300, 200);
         setLocation(500, 280);
@@ -54,6 +56,7 @@ public class ViewGui extends JFrame implements ActionListener {
         login.setBounds(110, 100, 80, 20);
         Ok.setBounds(110, 100, 80, 20);
         password.setBounds(20, 63, 80, 20);
+        showResult.setBounds(20, 63, 80, 20);
         Amount.setBounds(20, 63, 80, 20);
         login.addActionListener(this);
         logOut.addActionListener(this);
@@ -68,9 +71,10 @@ public class ViewGui extends JFrame implements ActionListener {
         choicePannel.add(withdrawal);
         choicePannel.add(logOut);
 
-        checkBalancePanel.add(Amount);
-        checkBalancePanel.add(txtAmount);
-        checkBalancePanel.add(Ok, BorderLayout.SOUTH);
+        checkBalancePanel.add(Amount,BorderLayout.WEST);
+        checkBalancePanel.add(txtAmount,BorderLayout.EAST);
+        checkBalancePanel.add(Ok,BorderLayout.CENTER);
+        checkBalancePanel.add(showResult,BorderLayout.SOUTH);
 
 
         setVisible(true);
@@ -123,6 +127,7 @@ public class ViewGui extends JFrame implements ActionListener {
         if (e.getSource() == Ok) {
             try {
                 cont.insertwithdrawal(kundId,"-"+ txtAmount.getText(), 1);
+                showResult.append("-"+txtAmount.getText()+"\n");
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
