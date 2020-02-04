@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class ViewGui extends JFrame implements ActionListener {
+public class ViewGuiAdmin extends JFrame implements ActionListener {
     Controller cont;
     JButton login;
     JButton logOut;
@@ -16,10 +16,12 @@ public class ViewGui extends JFrame implements ActionListener {
     JButton withdrawal;
     JPanel loginpanel;
     JPanel choicePannel;
+    JTextField txuser;
     JTextField pass;
+    JLabel username;
     JLabel password;
 
-    public ViewGui() {
+    public ViewGuiAdmin() {
         super("Login Customer");
         cont = new Controller(this);
 
@@ -31,7 +33,9 @@ public class ViewGui extends JFrame implements ActionListener {
         checkLoan = new JButton("check Loan");
         withdrawal = new JButton("withdrawal");
         logOut = new JButton("Log out");
+        txuser = new JTextField(15);
         pass = new JPasswordField(15);
+        username = new JLabel("User - ");
         password = new JLabel("PIN - ");
 
         setSize(300, 200);
@@ -39,12 +43,16 @@ public class ViewGui extends JFrame implements ActionListener {
         loginpanel.setLayout(null);
 
 
+        txuser.setBounds(70,30,150,20);
         pass.setBounds(70, 65, 150, 20);
         login.setBounds(110, 100, 80, 20);
+        username.setBounds(20,28,80,20);
         password.setBounds(20, 63, 80, 20);
         login.addActionListener(this);
         logOut.addActionListener(this);
         loginpanel.add(login);
+        loginpanel.add(username);
+        loginpanel.add(txuser);
         loginpanel.add(pass);
         loginpanel.add(password);
 
@@ -62,22 +70,22 @@ public class ViewGui extends JFrame implements ActionListener {
 
 
     public static void main(String[] args) {
-        ViewGui v = new ViewGui();
+        ViewGuiAdmin v = new ViewGuiAdmin();
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == login) {
+    public void actionPerformed(ActionEvent ee) {
+        if (ee.getSource() == login) {
             try {
-                if (cont.getAccountByString(pass.getText()) > 0) {
+                if (cont.getAccountByStringAdmin(txuser.getText(),pass.getText()) > 0) {
                     add(choicePannel);
                     setTitle("Customer choice");
                     loginpanel.setVisible(false);
                     choicePannel.setVisible(true);
 
                 } else
-                    JOptionPane.showMessageDialog(null, "kund finns inte");
+                    JOptionPane.showMessageDialog(null, "Admin finns inte");
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -85,7 +93,7 @@ public class ViewGui extends JFrame implements ActionListener {
         }
 
 
-        if (e.getSource() == logOut) {
+        if (ee.getSource() == logOut) {
             add(loginpanel);
             setTitle("Login Customer");
             loginpanel.setVisible(true);
