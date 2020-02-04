@@ -153,7 +153,7 @@ public class SPSRepository {
 
     // Currency methods
 
-    public void callBalanceChangeFromDB(int accountID, int amountToInsert, int rateID) throws SQLException {
+    public String callBalanceChangeFromDB(int accountID, String amountToInsert, int rateID) throws SQLException {
 
         String sqlQuery = "call balanceChange(?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
@@ -162,11 +162,11 @@ public class SPSRepository {
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
             ResultSet rs;
             pstmt.setInt(1, accountID);
-            pstmt.setInt(2, amountToInsert);
-            pstmt.setInt(3, rateID);
+            pstmt.setInt(2, Integer.parseInt(amountToInsert));
+            pstmt.setInt(3,rateID);
             rs = pstmt.executeQuery();
 
-            System.out.println(rs);
+            return rs+"";
 
         }
 
@@ -195,6 +195,7 @@ public class SPSRepository {
         SPSRepository sps = new SPSRepository();
         System.out.println(sps.callSpVerifyCredentialsFromDB("userName1","12345"));
         System.out.println(sps.callSpVerifyCredentialsPasswordFromDB("12345"));
+        System.out.println(sps.callBalanceChangeFromDB(1,"-150",1));
 
     }
 }

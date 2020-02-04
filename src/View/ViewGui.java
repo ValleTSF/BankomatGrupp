@@ -3,6 +3,7 @@ package View;
 import Controller.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -10,29 +11,39 @@ import java.sql.SQLException;
 public class ViewGui extends JFrame implements ActionListener {
     Controller cont;
     JButton login;
+    JButton Ok;
     JButton logOut;
     JButton CheckBalance;
     JButton checkLoan;
     JButton withdrawal;
     JPanel loginpanel;
     JPanel choicePannel;
+    JPanel checkBalancePanel;
     JTextField pass;
     JLabel password;
+    JLabel Amount;
+    JTextField txtAmount;
+    int kundId;
 
     public ViewGui() {
         super("Login Customer");
         cont = new Controller(this);
 
+
         loginpanel = new JPanel();
         choicePannel = new JPanel();
+        checkBalancePanel = new JPanel();
         add(loginpanel);
         login = new JButton("Login");
+        Ok = new JButton("OK");
         CheckBalance = new JButton("Check Balance");
         checkLoan = new JButton("check Loan");
         withdrawal = new JButton("withdrawal");
         logOut = new JButton("Log out");
         pass = new JPasswordField(15);
         password = new JLabel("PIN - ");
+        txtAmount = new JTextField(15);
+        Amount = new JLabel("Amount - ");
 
         setSize(300, 200);
         setLocation(500, 280);
@@ -41,9 +52,13 @@ public class ViewGui extends JFrame implements ActionListener {
 
         pass.setBounds(70, 65, 150, 20);
         login.setBounds(110, 100, 80, 20);
+        Ok.setBounds(110, 100, 80, 20);
         password.setBounds(20, 63, 80, 20);
+        Amount.setBounds(20, 63, 80, 20);
         login.addActionListener(this);
         logOut.addActionListener(this);
+        withdrawal.addActionListener(this);
+        Ok.addActionListener(this);
         loginpanel.add(login);
         loginpanel.add(pass);
         loginpanel.add(password);
@@ -53,9 +68,15 @@ public class ViewGui extends JFrame implements ActionListener {
         choicePannel.add(withdrawal);
         choicePannel.add(logOut);
 
+        checkBalancePanel.add(Amount);
+        checkBalancePanel.add(txtAmount);
+        checkBalancePanel.add(Ok, BorderLayout.SOUTH);
+
+
         setVisible(true);
         loginpanel.setVisible(true);
         choicePannel.setVisible(false);
+        checkBalancePanel.setVisible(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
@@ -71,6 +92,7 @@ public class ViewGui extends JFrame implements ActionListener {
         if (e.getSource() == login) {
             try {
                 if (cont.getAccountByString(pass.getText()) > 0) {
+                    kundId = cont.getAccountByString(pass.getText());
                     add(choicePannel);
                     setTitle("Customer choice");
                     loginpanel.setVisible(false);
@@ -91,6 +113,21 @@ public class ViewGui extends JFrame implements ActionListener {
             loginpanel.setVisible(true);
             choicePannel.setVisible(false);
         }
-    }
 
+        if (e.getSource() == withdrawal) {
+            add(checkBalancePanel);
+            checkBalancePanel.setVisible(true);
+            choicePannel.setVisible(false);
+            loginpanel.setVisible(false);
+        }
+        if (e.getSource() == Ok) {
+            try {
+                cont.insertwithdrawal(kundId,"-"+ txtAmount.getText(), 1);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
 }
+
