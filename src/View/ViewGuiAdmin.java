@@ -3,6 +3,7 @@ package View;
 import Controller.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -15,6 +16,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     JButton checkLoan;
     JButton withdrawal;
     JButton adminUtilities;
+    JButton initiate;
+    JButton cancel;
     JPanel adminUtilitiesPanel;
     JPanel loginpanel;
     JPanel choicePannel;
@@ -24,6 +27,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     JLabel password;
     JComboBox adminUtitiliesPanelComboBox;
     String[] adminComboBoxOptions;
+    String comboBoxChoice;
 
     public ViewGuiAdmin() {
         super("Login Admin");
@@ -48,6 +52,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         adminUtilitiesPanel = new JPanel();
         add(loginpanel);
         login = new JButton("Login");
+        initiate = new JButton("Initiate");
+        cancel = new JButton("Cancel");
         CheckBalance = new JButton("Check Balance");
         checkLoan = new JButton("check Loan");
         withdrawal = new JButton("withdrawal");
@@ -73,6 +79,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         login.addActionListener(this);
         logOut.addActionListener(this);
         adminUtilities.addActionListener(this);
+        initiate.addActionListener(this);
+        cancel.addActionListener(this);
         loginpanel.add(login);
         loginpanel.add(username);
         loginpanel.add(txuser);
@@ -86,16 +94,17 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         choicePannel.add(logOut);
 
         adminUtilitiesPanel.add(adminUtitiliesPanelComboBox);
+        adminUtilitiesPanel.add(initiate);
+        adminUtilitiesPanel.add(cancel);
 
 
-
-    setVisible(true);
+        setVisible(true);
         loginpanel.setVisible(true);
         choicePannel.setVisible(false);
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-}
+    }
 
 
     public static void main(String[] args) {
@@ -127,12 +136,65 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
             setTitle("Login Customer");
             loginpanel.setVisible(true);
             choicePannel.setVisible(false);
+
         } else if (ee.getSource() == adminUtilities) {
-          add(adminUtilitiesPanel);
-          setTitle("Admin Utilities");
-          adminUtilitiesPanel.setVisible(true);
-          choicePannel.setVisible(false);
+            add(adminUtilitiesPanel);
+            setTitle("Admin Utilities");
+            adminUtilitiesPanel.setVisible(true);
+            choicePannel.setVisible(false);
         }
+        if (ee.getSource() == initiate) {
+            comboBoxChoice = adminUtitiliesPanelComboBox.getItemAt(adminUtitiliesPanelComboBox.getSelectedIndex()).toString();
+            initiateAdminUtility(comboBoxChoice);
+        } else if (ee.getSource() == cancel)
+            System.exit(0);
     }
 
+    public void initiateAdminUtility(String comboBoxChoice) {
+
+        switch (comboBoxChoice) {
+            case "Add Customer":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Delete Customer":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Update Customer Information":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Create Customer Account":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Delete Customer Account":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Insert Money to Customer":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Withdraw Money from Customer":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Approve loan":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Edit Rate for Account":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Edit Rate for Loan":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Show Payment Plan":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Edit Payment Plan":
+                System.out.println(comboBoxChoice);
+                break;
+            case "Show Account History":
+                System.out.println(comboBoxChoice);
+                break;
+            default:
+                System.out.println("Default outcome");
+                break;
+        }
+    }
 }
