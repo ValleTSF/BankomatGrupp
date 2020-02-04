@@ -1,5 +1,4 @@
 package Controller;
-import Model.Repository.*;
 import Model.Model;
 import View.ViewGui;
 import View.ViewGuiAdmin;
@@ -35,6 +34,9 @@ public class Controller {
     }
 
 
+    public String insertwithdrawal(int accountID, String amountToInsert, int rateID) throws SQLException {
+        return model.returnBalance(accountID,amountToInsert,rateID);
+    }
 }
 
 

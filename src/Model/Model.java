@@ -17,4 +17,7 @@ public class Model {
         return rep.callSpVerifyCredentialsFromDB(username,password);
     }
 
+    public String returnBalance(int accountID, String amountToInsert, int rateID) throws SQLException {
+        return rep.callBalanceChangeFromDB(accountID,amountToInsert,rateID);
+    }
 }
