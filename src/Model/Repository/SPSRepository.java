@@ -1,7 +1,5 @@
 package Model.Repository;
 
-import Model.Model;
-
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.Properties;
@@ -17,6 +15,8 @@ public class SPSRepository {
             e.printStackTrace();
         }
     }
+
+    // User Methods
 
     public void callCreateUserFromDB(String user_first_name, String user_last_name, String user_mail) throws SQLException {
 
@@ -54,7 +54,6 @@ public class SPSRepository {
 
     }
 
-
     public void callUpdateUserFromDB(int user_id, String user_first_name, String user_last_name, String user_mail) throws SQLException {
 
         String sqlQuery = "call create_User(?,?,?)";
@@ -75,6 +74,8 @@ public class SPSRepository {
 
     }
 
+    // Account Methods
+
     public void callCreateUserAccountFromDB(int userID, String newUserName, int newPassword) throws SQLException {
 
         String sqlQuery = "call createUserAccount(?,?,?)";
@@ -93,6 +94,25 @@ public class SPSRepository {
         }
 
     }
+
+    public void callDeleteUserAccountFromDB(int userID) throws SQLException {
+
+        String sqlQuery = "call deleteUserAccount(?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, userID);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+
+    }
+
+    // Verification
 
     public int callSpVerifyCredentialsFromDB(String user_name, String user_password) throws SQLException {
 
@@ -131,6 +151,44 @@ public class SPSRepository {
 
     }
 
+    // Currency methods
+
+    public void callBalanceChangeFromDB(int accountID, int amountToInsert, int rateID) throws SQLException {
+
+        String sqlQuery = "call balanceChange(?,?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, accountID);
+            pstmt.setInt(2, amountToInsert);
+            pstmt.setInt(3, rateID);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+
+    }
+
+    public void callPayBackLoanFromDB(int account_loan_id, int pay_back_amount) throws SQLException {
+
+        String sqlQuery = "call balanceChange(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, account_loan_id);
+            pstmt.setInt(2, pay_back_amount);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+
+    }
 
     public static void main(String[] args) throws SQLException {
 
