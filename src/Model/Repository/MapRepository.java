@@ -4,9 +4,8 @@ import Pojos.*;
 
 import java.io.FileInputStream;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.sql.Date;
+import java.util.*;
 
 public class MapRepository {
 
@@ -220,10 +219,24 @@ public class MapRepository {
     }
 
 
+
+    public List<String> balance(int userID){
+        List<String> stringList = new ArrayList<>();
+        Map<Integer,Account_Balance> hashBalance = mapAccountBalanceLoanFromDb();
+        Timestamp date = hashBalance.get(userID).getUser_id().getCreatedOn();
+        int valuta = hashBalance.get(userID).getAmount();
+
+        for (int i = 0; i < hashBalance.size(); i++) {
+            stringList.add(date + " " + valuta);
+        }
+
+        return stringList;
+    }
+
     public static void main(String[] args) throws SQLException {
         MapRepository r = new MapRepository();
 
-        Map<Integer, Transactions> transactionsMap = r.mapTransactionsFromDb();
+        System.out.println(r.balance(1));
 
     }
 

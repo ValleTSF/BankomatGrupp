@@ -12,6 +12,7 @@ public class Controller {
     private ViewGuiAdmin viewAdmin;
     private Model model = new Model();
 
+
     public Controller(ViewGui view){
         this.view = view;
     }
