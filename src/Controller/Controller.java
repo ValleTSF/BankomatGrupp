@@ -33,6 +33,10 @@ public class Controller {
 
     }
 
+    public boolean getAccountType(String userName, String password) throws SQLException {
+        return model.returnAccountType(userName, password).equalsIgnoreCase("admin");
+    }
+
 
     public String insertwithdrawal(int accountID, String amountToInsert, int rateID) throws SQLException {
         return model.returnBalance(accountID,amountToInsert,rateID);

@@ -28,6 +28,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         super("Login Admin");
         cont = new Controller(this);
 
+        setResizable(false);
         adminComboBoxOptions = new String[]{"Add Customer",
                 "Delete Customer",
                 "Update Customer Information",
@@ -98,17 +99,17 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ee) {
         if (ee.getSource() == login) {
             try {
-                if (cont.getAccountByStringAdmin(txuser.getText(), pass.getText()) > 0) {
+                if (cont.getAccountType(txuser.getText(), pass.getText())) {
                     add(adminUtilitiesPanel);
                     setTitle("Admin Utilities");
                     adminUtilitiesPanel.setVisible(true);
                     loginpanel.setVisible(false);
 
-                } else
-                    JOptionPane.showMessageDialog(null, "Admin finns inte");
+                }
 
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+
+            } catch (SQLException | NullPointerException ex) {
+               JOptionPane.showMessageDialog(null, "Admin finns inte");
             }
 
         }
