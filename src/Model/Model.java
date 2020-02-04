@@ -39,4 +39,8 @@ public class Model {
         Model model = new Model();
         System.out.println(model.returnAccountType("userName7","Pushthetempo"));
     }
+
+    public int returnLoanBalanc(int kundId) throws SQLException {
+        return rep.callSpGetLoanFromDB(kundId+"");
+    }
 }

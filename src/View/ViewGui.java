@@ -19,6 +19,7 @@ public class ViewGui extends JFrame implements ActionListener {
     JPanel loginpanel;
     JPanel choicePannel;
     JPanel checkBalancePanel;
+    JPanel checkLoanPanel;
     JTextField pass;
     JLabel password;
     JLabel Amount;
@@ -33,6 +34,7 @@ public class ViewGui extends JFrame implements ActionListener {
         setResizable(false);
         loginpanel = new JPanel();
         choicePannel = new JPanel();
+        checkLoanPanel = new JPanel();
         checkBalancePanel = new JPanel(new FlowLayout());
         add(loginpanel);
         login = new JButton("Login");
@@ -46,6 +48,7 @@ public class ViewGui extends JFrame implements ActionListener {
         txtAmount = new JTextField(15);
         Amount = new JLabel("Amount - ");
         showResult = new JTextArea();
+        showResult.setEditable(false);
 
         setSize(300, 200);
         setLocation(500, 280);
@@ -61,6 +64,7 @@ public class ViewGui extends JFrame implements ActionListener {
         login.addActionListener(this);
         logOut.addActionListener(this);
         withdrawal.addActionListener(this);
+        checkLoan.addActionListener(this);
         Ok.addActionListener(this);
         loginpanel.add(login);
         loginpanel.add(pass);
@@ -76,11 +80,14 @@ public class ViewGui extends JFrame implements ActionListener {
         checkBalancePanel.add(Ok,BorderLayout.CENTER);
         checkBalancePanel.add(showResult,BorderLayout.SOUTH);
 
+        checkLoanPanel.add(showResult,BorderLayout.SOUTH);
+
 
         setVisible(true);
         loginpanel.setVisible(true);
         choicePannel.setVisible(false);
         checkBalancePanel.setVisible(false);
+        checkLoanPanel.setVisible(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
@@ -132,6 +139,19 @@ public class ViewGui extends JFrame implements ActionListener {
                 ex.printStackTrace();
             }
 
+        }
+        if(e.getSource() == checkLoan){
+            add(checkLoanPanel);
+            checkLoanPanel.setVisible(true);
+            checkBalancePanel.setVisible(false);
+            choicePannel.setVisible(false);
+            loginpanel.setVisible(false);
+            try {
+                int loan = cont.getLoanBalance(kundId);
+                showResult.append(loan +" Kvar att betala"+"\n");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

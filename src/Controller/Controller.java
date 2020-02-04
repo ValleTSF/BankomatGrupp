@@ -33,6 +33,10 @@ public class Controller {
     public String insertwithdrawal(int accountID, String amountToInsert, int rateID) throws SQLException {
         return model.returnBalance(accountID,amountToInsert,rateID);
     }
+
+    public int getLoanBalance(int kundId) throws SQLException {
+        return model.returnLoanBalanc(kundId);
+    }
 }
 
 
