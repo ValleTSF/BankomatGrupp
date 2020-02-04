@@ -18,9 +18,9 @@ public class SPSRepository {
         }
     }
 
-    public void callCreateUserFromDB(String user_first_name, String user_last_name, int user_userRoler) throws SQLException {
+    public void callCreateUserFromDB(String user_first_name, String user_last_name, String user_mail) throws SQLException {
 
-        String sqlQuery = "call createUser(?,?,?)";
+        String sqlQuery = "call create_User(?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
@@ -28,7 +28,44 @@ public class SPSRepository {
             ResultSet rs;
             pstmt.setString(1, user_first_name);
             pstmt.setString(2, user_last_name);
-            pstmt.setInt(3, user_userRoler);
+            pstmt.setString(3, user_mail);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+
+    }
+
+    public void callDeleteUserFromDB(int user_id) throws SQLException {
+
+        String sqlQuery = "call delete_User(?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, user_id);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+
+    }
+
+    public void callUpdateUserFromDB(int user_id, String user_first_name, String user_last_name, String user_mail) throws SQLException {
+
+        String sqlQuery = "call create_User(?,?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1,user_id);
+            pstmt.setString(2, user_first_name);
+            pstmt.setString(3, user_last_name);
+            pstmt.setString(4, user_mail);
             rs = pstmt.executeQuery();
 
             System.out.println(rs);
@@ -48,23 +85,6 @@ public class SPSRepository {
             pstmt.setInt(1, userID);
             pstmt.setString(2, newUserName);
             pstmt.setInt(3, newPassword);
-            rs = pstmt.executeQuery();
-
-            System.out.println(rs);
-
-        }
-
-    }
-
-    public void callDeleteUserAccountFromDB(int userID) throws SQLException {
-
-        String sqlQuery = "call createUserAccount(?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
-            pstmt.setInt(1, userID);
             rs = pstmt.executeQuery();
 
             System.out.println(rs);
