@@ -30,7 +30,7 @@ public class ViewGui extends JFrame implements ActionListener {
         super("Login Customer");
         cont = new Controller(this);
 
-
+        setResizable(false);
         loginpanel = new JPanel();
         choicePannel = new JPanel();
         checkBalancePanel = new JPanel(new FlowLayout());

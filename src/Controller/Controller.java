@@ -23,14 +23,10 @@ public class Controller {
     public int getAccountByString(String password) throws SQLException {
         return model.returnAccountID(password);
 
-
     }
 
-
-    public int getAccountByStringAdmin(String userName,String password) throws SQLException {
-        return model.returnAccountAdminID(userName,password);
-
-
+    public boolean getAccountType(String userName, String password) throws SQLException {
+        return model.returnAccountType(userName, password).equalsIgnoreCase("admin");
     }
 
 
