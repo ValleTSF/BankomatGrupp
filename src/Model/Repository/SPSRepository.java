@@ -54,6 +54,7 @@ public class SPSRepository {
 
     }
 
+
     public void callUpdateUserFromDB(int user_id, String user_first_name, String user_last_name, String user_mail) throws SQLException {
 
         String sqlQuery = "call create_User(?,?,?)";
