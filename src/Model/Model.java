@@ -17,9 +17,6 @@ public class Model {
         return rep.callSpVerifyCredentialsPasswordFromDB(password);
     }
 
-    public int returnAccountAdminID(String username,String password) throws SQLException {
-        return rep.callSpVerifyCredentialsFromDB(username,password);
-    }
 
     public String returnAccountType(String username, String password) throws SQLException {
         String userid =""+rep.callSpVerifyCredentialsFromDB(username,password);
