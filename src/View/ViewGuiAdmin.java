@@ -11,16 +11,11 @@ import java.sql.SQLException;
 public class ViewGuiAdmin extends JFrame implements ActionListener {
     Controller cont;
     JButton login;
-    JButton logOut;
-    JButton CheckBalance;
-    JButton checkLoan;
-    JButton withdrawal;
     JButton adminUtilities;
     JButton initiate;
     JButton cancel;
     JPanel adminUtilitiesPanel;
     JPanel loginpanel;
-    JPanel choicePannel;
     JTextField txuser;
     JTextField pass;
     JLabel username;
@@ -48,17 +43,12 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 "Show Account History"};
 
         loginpanel = new JPanel();
-        choicePannel = new JPanel();
         adminUtilitiesPanel = new JPanel();
         add(loginpanel);
         login = new JButton("Login");
         initiate = new JButton("Initiate");
-        cancel = new JButton("Cancel");
-        CheckBalance = new JButton("Check Balance");
-        checkLoan = new JButton("check Loan");
-        withdrawal = new JButton("withdrawal");
+        cancel = new JButton("Cancel");;
         adminUtilities = new JButton("Admin Utilities");
-        logOut = new JButton("Log out");
         txuser = new JTextField(15);
         pass = new JPasswordField(15);
         username = new JLabel("User - ");
@@ -77,7 +67,6 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         username.setBounds(20, 28, 80, 20);
         password.setBounds(20, 63, 80, 20);
         login.addActionListener(this);
-        logOut.addActionListener(this);
         adminUtilities.addActionListener(this);
         initiate.addActionListener(this);
         cancel.addActionListener(this);
@@ -87,12 +76,6 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         loginpanel.add(pass);
         loginpanel.add(password);
 
-        choicePannel.add(CheckBalance);
-        choicePannel.add(adminUtilities);
-        choicePannel.add(checkLoan);
-        choicePannel.add(withdrawal);
-        choicePannel.add(logOut);
-
         adminUtilitiesPanel.add(adminUtitiliesPanelComboBox);
         adminUtilitiesPanel.add(initiate);
         adminUtilitiesPanel.add(cancel);
@@ -100,7 +83,6 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
 
         setVisible(true);
         loginpanel.setVisible(true);
-        choicePannel.setVisible(false);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -117,10 +99,10 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         if (ee.getSource() == login) {
             try {
                 if (cont.getAccountByStringAdmin(txuser.getText(), pass.getText()) > 0) {
-                    add(choicePannel);
-                    setTitle("Customer choice");
+                    add(adminUtilitiesPanel);
+                    setTitle("Admin Utilities");
+                    adminUtilitiesPanel.setVisible(true);
                     loginpanel.setVisible(false);
-                    choicePannel.setVisible(true);
 
                 } else
                     JOptionPane.showMessageDialog(null, "Admin finns inte");
@@ -128,20 +110,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-        }
 
-
-        if (ee.getSource() == logOut) {
-            add(loginpanel);
-            setTitle("Login Customer");
-            loginpanel.setVisible(true);
-            choicePannel.setVisible(false);
-
-        } else if (ee.getSource() == adminUtilities) {
-            add(adminUtilitiesPanel);
-            setTitle("Admin Utilities");
-            adminUtilitiesPanel.setVisible(true);
-            choicePannel.setVisible(false);
         }
         if (ee.getSource() == initiate) {
             comboBoxChoice = adminUtitiliesPanelComboBox.getItemAt(adminUtitiliesPanelComboBox.getSelectedIndex()).toString();
