@@ -171,6 +171,32 @@ public class SPSRepository {
         }
 
     }
+    public int callgetLoanAmountFromDB(String accountID) throws SQLException {
+
+        String sqlQuery = "call sp_get_loan_amount_by_account_id(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+            pstmt.setInt(1, Integer.parseInt(accountID));
+            pstmt.registerOutParameter(2, Types.INTEGER);
+            pstmt.execute();
+            return pstmt.getInt(2);
+        }
+    }
+    public double callgetLoanRateFromDB(String accountID) throws SQLException {
+
+        String sqlQuery = "call sp_get_rate_by_account_id(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+            pstmt.setInt(1, Integer.parseInt(accountID));
+            pstmt.registerOutParameter(2, Types.DOUBLE);
+            pstmt.execute();
+            return pstmt.getDouble(2);
+        }
+    }
 
     public void callPayBackLoanFromDB(int account_loan_id, int pay_back_amount) throws SQLException {
 
@@ -196,6 +222,10 @@ public class SPSRepository {
         System.out.println(sps.callSpVerifyCredentialsFromDB("userName1","12345"));
         System.out.println(sps.callSpVerifyCredentialsPasswordFromDB("12345"));
         System.out.println(sps.callBalanceChangeFromDB(1,"-150",1));
-
+        System.out.println("-----------------");
+        System.out.println(sps.callgetLoanAmountFromDB("6"));
+        System.out.println(sps.callgetLoanRateFromDB("6"));
+        System.out.println(sps.callgetLoanAmountFromDB("1"));
+        System.out.println(sps.callgetLoanRateFromDB("1"));
     }
 }
