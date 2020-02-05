@@ -36,6 +36,7 @@ public class ViewGui extends JFrame implements ActionListener {
     JTextArea checkBalanceAmount;
     JTextArea checkBalanceHistory;
     int kundId;
+    String pickedAccountString;
 
     public ViewGui() {
         super("Login Customer");
@@ -136,6 +137,7 @@ public class ViewGui extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == login) {
             try {
                 if (cont.getAccountByString(passwordTextField.getText()) > 0) {
@@ -169,28 +171,31 @@ public class ViewGui extends JFrame implements ActionListener {
             choicePanel.setVisible(false);
             loginPanel.setVisible(false);
             checkBalancePanel.setVisible(false);
-
-        }
-
-        if (e.getSource() == withdrawalConfirm) {
-
             try {
                 JComboBox kontoList = new JComboBox(cont.getDropDownAccounts(kundId));
                 JOptionPane.showMessageDialog(null, kontoList, "Title",
                         JOptionPane.QUESTION_MESSAGE);
                 int get5 = kontoList.getSelectedIndex();
                 String[] accountStringArray = cont.getDropDownAccounts(kundId);
-                String pickedAccountString = accountStringArray[get5];
+                 pickedAccountString = accountStringArray[get5];
+            }catch (SQLException x){
+                x.printStackTrace();
+            }
 
+        }
+
+        if (e.getSource() == withdrawalConfirm) {
+            try{
                 cont.insertwithdrawal(kundId, pickedAccountString,"-" + amountTextField.getText(), 1);
                 showWithdrawal.append(amountTextField.getText() + ", har dragits från ditt konto\n");
+
                 showBalanceAmount.setText("Nuvarande saldo: \n"
                         + cont.getBalanceNameAndAmount(kundId + ""));
-                amountTextField.setText("");
-
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            amountTextField.setText("");
+
 
 
         }

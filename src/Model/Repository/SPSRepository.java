@@ -320,7 +320,7 @@ public class SPSRepository {
     }
     public List<String> getBalanceAccountsAmountForWhereUserId(int account_id) throws SQLException {
         List<String> accountList = new ArrayList<>();
-        String sqlQuery = "select amount  from account_balance" +
+        String sqlQuery = "select amount   from account_balance" +
                 " where account_id = ?";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
