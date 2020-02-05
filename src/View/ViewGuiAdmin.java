@@ -15,6 +15,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     JButton initiate;
     JButton cancel;
     JPanel adminUtilitiesPanel;
+    JPanel createUserAccountPanel;
     JPanel loginpanel;
     JTextField txuser;
     JTextField pass;
@@ -48,7 +49,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
         add(loginpanel);
         login = new JButton("Login");
         initiate = new JButton("Initiate");
-        cancel = new JButton("Cancel");;
+        cancel = new JButton("Cancel");
+        ;
         adminUtilities = new JButton("Admin Utilities");
         txuser = new JTextField(15);
         pass = new JPasswordField(15);
@@ -109,18 +111,22 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
 
 
             } catch (SQLException | NullPointerException ex) {
-               JOptionPane.showMessageDialog(null, "Admin finns inte");
+                JOptionPane.showMessageDialog(null, "Admin finns inte");
             }
 
         }
         if (ee.getSource() == initiate) {
             comboBoxChoice = adminUtitiliesPanelComboBox.getItemAt(adminUtitiliesPanelComboBox.getSelectedIndex()).toString();
-            initiateAdminUtility(comboBoxChoice);
+            try {
+                initiateAdminUtility(comboBoxChoice);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } else if (ee.getSource() == cancel)
             System.exit(0);
     }
 
-    public void initiateAdminUtility(String comboBoxChoice) {
+    public void initiateAdminUtility(String comboBoxChoice) throws SQLException {
 
         switch (comboBoxChoice) {
             case "Add Customer":
@@ -133,6 +139,14 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 System.out.println(comboBoxChoice);
                 break;
             case "Create Customer Account":
+                int userID = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
+                String username = JOptionPane.showInputDialog("Input username");
+                int password = Integer.parseInt(JOptionPane.showInputDialog("Input password (4 digits)"));
+                if (cont.createUserAccount(userID, username, password))
+                    JOptionPane.showMessageDialog(null, "success");
+                else
+                    JOptionPane.showMessageDialog(null, "ERROR");
+
                 System.out.println(comboBoxChoice);
                 break;
             case "Delete Customer Account":

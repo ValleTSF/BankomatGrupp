@@ -219,10 +219,8 @@ public class MapRepository {
         return transactionsHashMap;
     }
 
-
     public static void main(String[] args) throws SQLException {
         MapRepository r = new MapRepository();
-
         Map<Integer, Transactions> transactionsMap = r.mapTransactionsFromDb();
 
     }

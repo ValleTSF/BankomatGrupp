@@ -12,7 +12,6 @@ public class Account {
     public Account() {
     }
 
-
     public Account(User user_id, Account_Type account_type_id, Timestamp createdOn, Timestamp lastUpdated) {
         this.user_id = user_id;
         this.account_type_id = account_type_id;
@@ -20,7 +19,7 @@ public class Account {
         this.lastUpdated = lastUpdated;
     }
 
-    public Account(int id, User user_id, Account_Type account_type_id, Timestamp createdOn, Timestamp lastUpdated) {
+    public Account(int id, User user_id, String account_name, Account_Type account_type_id, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.user_id = user_id;
         this.account_type_id = account_type_id;
