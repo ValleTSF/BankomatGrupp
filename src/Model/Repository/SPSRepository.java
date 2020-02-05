@@ -4,6 +4,8 @@ import Model.Model;
 
 import java.io.FileInputStream;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class SPSRepository {
@@ -110,12 +112,73 @@ public class SPSRepository {
 
     }
 
+    // Currency methods
+
+    public String callBalanceChangeFromDB(int accountID, String amountToInsert, int rateID) throws SQLException {
+
+        String sqlQuery = "call balanceChange(?,?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, accountID);
+            pstmt.setInt(2, Integer.parseInt(amountToInsert));
+            pstmt.setInt(3, rateID);
+            rs = pstmt.executeQuery();
+
+            return rs + "";
+
+        }
+
+    }
+
+    public void callPayBackLoanFromDB(int account_loan_id, int pay_back_amount) throws SQLException {
+
+        String sqlQuery = "call balanceChange(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, account_loan_id);
+            pstmt.setInt(2, pay_back_amount);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+
+    }
+
+    public List<String> callGetBalanceHistoryForCurrentMonth(int account_id) throws SQLException {
+        List<String> his = new ArrayList<>();
+        String sqlQuery = " select concat(account_balance.createdOn,' ',account_balance.amount) as balance" +
+                " from account_balance" +
+                " inner join account on account_balance.account_id = account.id" +
+                " inner join user on account.user_id = user.id" +
+                " where account.id = ?" +
+                " and month(account_balance.createdOn) = month(now())";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setInt(1, account_id);
+            ResultSet rss;
+            rss = stmt.executeQuery();
+
+            while (rss.next()){
+                his.add(rss.getString("balance"));
+            }
+        }
+        return his;
+    }
 
     public static void main(String[] args) throws SQLException {
-
-        SPSRepository sps = new SPSRepository();
-        System.out.println(sps.callSpVerifyCredentialsFromDB("userName1","12345"));
-        System.out.println(sps.callSpVerifyCredentialsPasswordFromDB("12345"));
+        SPSRepository re = new SPSRepository();
+      //  re.callGetBalanceHistoryForCurrentMonth(1);
+        List<String> ee = re.callGetBalanceHistoryForCurrentMonth(1);
+        ee.forEach(System.out::println);
 
     }
 }
