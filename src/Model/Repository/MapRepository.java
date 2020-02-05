@@ -1,6 +1,6 @@
 package Model.Repository;
 
-import Pojos.*;
+import Model.Pojos.*;
 
 import java.io.FileInputStream;
 import java.sql.*;

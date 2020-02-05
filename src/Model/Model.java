@@ -2,8 +2,8 @@ package Model;
 
 
 import Model.Repository.*;
-import Pojos.Account;
-import Pojos.Account_Balance;
+import Model.Pojos.Account;
+import Model.Pojos.Account_Balance;
 
 import java.sql.SQLException;
 import java.util.List;

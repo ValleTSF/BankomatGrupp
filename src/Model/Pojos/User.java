@@ -1,4 +1,4 @@
-package Pojos;
+package Model.Pojos;
 
 import java.sql.Timestamp;
 

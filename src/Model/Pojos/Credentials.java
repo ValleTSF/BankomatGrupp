@@ -1,35 +1,32 @@
-package Pojos;
+package Model.Pojos;
 
 import java.sql.Timestamp;
 
-public class Account_Loan {
+public class Credentials {
 
     private int id;
     private Account account_id;
-    private int amount;
-    private int amount_paid;
-    private Rate rate_id;
+    private String userName;
+    private String passWord;
     private Timestamp createdOn;
     private Timestamp lastUpdated;
 
-    public Account_Loan() {
+    public Credentials() {
     }
 
-    public Account_Loan(Account account_id, int amount, int amount_paid, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
+    public Credentials(Account account_id, String userName, String passWord, Timestamp createdOn, Timestamp lastUpdated) {
         this.account_id = account_id;
-        this.amount = amount;
-        this.amount_paid = amount_paid;
-        this.rate_id = rate_id;
+        this.userName = userName;
+        this.passWord = passWord;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
 
-    public Account_Loan(int id, Account account_id, int amount, int amount_paid, Rate rate_id, Timestamp createdOn, Timestamp lastUpdated) {
+    public Credentials(int id, Account account_id, String userName, String passWord, Timestamp createdOn, Timestamp lastUpdated) {
         this.id = id;
         this.account_id = account_id;
-        this.amount = amount;
-        this.amount_paid = amount_paid;
-        this.rate_id = rate_id;
+        this.userName = userName;
+        this.passWord = passWord;
         this.createdOn = createdOn;
         this.lastUpdated = lastUpdated;
     }
@@ -50,28 +47,20 @@ public class Account_Loan {
         this.account_id = account_id;
     }
 
-    public int getAmount() {
-        return amount;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public int getAmount_paid() {
-        return amount_paid;
+    public String getPassWord() {
+        return passWord;
     }
 
-    public void setAmount_paid(int amount_paid) {
-        this.amount_paid = amount_paid;
-    }
-
-    public Rate getRate_id() {
-        return rate_id;
-    }
-
-    public void setRate_id(Rate rate_id) {
-        this.rate_id = rate_id;
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
 
     public Timestamp getCreatedOn() {

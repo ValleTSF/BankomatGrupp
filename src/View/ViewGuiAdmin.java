@@ -1,11 +1,8 @@
 package View;
 
 import Controller.*;
-import Pojos.Account;
-import org.w3c.dom.html.HTMLObjectElement;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
