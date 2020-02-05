@@ -25,6 +25,7 @@ public class ViewGui extends JFrame implements ActionListener {
     JLabel Amount;
     JTextField txtAmount;
     JTextArea showResult;
+    JTextArea showResult2;
     int kundId;
 
     public ViewGui() {
@@ -48,7 +49,9 @@ public class ViewGui extends JFrame implements ActionListener {
         txtAmount = new JTextField(15);
         Amount = new JLabel("Amount - ");
         showResult = new JTextArea();
+        showResult2 = new JTextArea();
         showResult.setEditable(false);
+        showResult2.setEditable(false);
 
         setSize(300, 200);
         setLocation(500, 280);
@@ -60,6 +63,7 @@ public class ViewGui extends JFrame implements ActionListener {
         Ok.setBounds(110, 100, 80, 20);
         password.setBounds(20, 63, 80, 20);
         showResult.setBounds(20, 63, 80, 20);
+        showResult2.setBounds(20, 63, 80, 20);
         Amount.setBounds(20, 63, 80, 20);
         login.addActionListener(this);
         logOut.addActionListener(this);
@@ -80,7 +84,7 @@ public class ViewGui extends JFrame implements ActionListener {
         checkBalancePanel.add(Ok,BorderLayout.CENTER);
         checkBalancePanel.add(showResult,BorderLayout.SOUTH);
 
-        checkLoanPanel.add(showResult,BorderLayout.SOUTH);
+        checkLoanPanel.add(showResult2,BorderLayout.SOUTH);
 
 
         setVisible(true);
@@ -148,7 +152,7 @@ public class ViewGui extends JFrame implements ActionListener {
             loginpanel.setVisible(false);
             try {
                 int loan = cont.getLoanBalance(kundId);
-                showResult.append(loan +" Kvar att betala"+"\n");
+                showResult2.append(loan +" Kvar att betala"+"\n");
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
