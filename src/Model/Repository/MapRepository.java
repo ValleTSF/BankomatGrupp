@@ -103,6 +103,7 @@ public class MapRepository {
                 accountHashMap.put(rs.getInt("id"),
                         new Account(
                                 userHashMap.get(rs.getInt("user_id")),
+                                rs.getString("account_name"),
                                 accountTypeHashMap.get(rs.getInt("account_type_id")),
                                 rs.getTimestamp("createdOn"),
                                 rs.getTimestamp("lastUpdated")));
@@ -219,10 +220,8 @@ public class MapRepository {
         return transactionsHashMap;
     }
 
-
     public static void main(String[] args) throws SQLException {
         MapRepository r = new MapRepository();
-
         Map<Integer, Transactions> transactionsMap = r.mapTransactionsFromDb();
 
     }
