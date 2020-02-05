@@ -96,6 +96,10 @@ public class Controller {
     public String updateUser(int user_id, String user_first_name, String user_last_name, String user_mail) throws SQLException {
         return spsRepository.callUpdateUserFromDB(user_id, user_first_name, user_last_name,user_mail);
     }
+
+    public Boolean createLoanForUser(int accountID, int loanAmount, int rateID) throws SQLException {
+        return spsRepository.callCreateLoanForUserFromDB(accountID, loanAmount, rateID);
+    }
 }
 
 

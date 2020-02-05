@@ -2,6 +2,7 @@ package View;
 
 import Controller.*;
 import Pojos.Account;
+import org.w3c.dom.html.HTMLObjectElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     String amount;
     String customerPin;
     int customerAccountID;
+    int rateID;
+    int intAmount;
     String customerFirstName;
     String customerLastName;
     String customerEmail;
@@ -166,8 +169,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 customerFirstName = JOptionPane.showInputDialog(null, "Input Customer's First Name");
                 customerLastName = JOptionPane.showInputDialog(null, "Input Customer's Last Name");
                 customerEmail = JOptionPane.showInputDialog(null, "Input Customer's Email");
-                cont.updateUser(userID,customerFirstName,customerLastName,customerEmail);
-                JOptionPane.showMessageDialog(null,"Success!");
+                cont.updateUser(userID, customerFirstName, customerLastName, customerEmail);
+                JOptionPane.showMessageDialog(null, "Success!");
                 break;
 
             case "Create Customer Account":
@@ -230,7 +233,15 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 break;
 
             case "Approve loan":
-                System.out.println(comboBoxChoice);
+                userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input user ID"));
+                intAmount = Integer.parseInt(JOptionPane.showInputDialog(null, "input amount to loan"));
+                rateID = Integer.parseInt(JOptionPane.showInputDialog(null, "input rate ID to use"));
+                customerPin = JOptionPane.showInputDialog(null, "Input Customer PIN");
+                customerAccountID = cont.getAccountByString(customerPin);
+                if (cont.createLoanForUser(customerAccountID, intAmount, rateID)) {
+                    JOptionPane.showMessageDialog(null, "Success!");
+                } else
+                    JOptionPane.showMessageDialog(null, "ERROR!");
                 break;
 
             case "Edit Rate for Account":

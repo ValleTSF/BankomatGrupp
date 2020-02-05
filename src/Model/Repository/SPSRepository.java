@@ -458,4 +458,27 @@ public class SPSRepository {
         return array;
     }
 
+    public Boolean callCreateLoanForUserFromDB(int accountID, int loanAmount, int rateID) throws SQLException {
+
+        String sqlQuery = "call createLoanForUser(?,?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+
+            pstmt.setInt(1, accountID);
+            pstmt.setInt(2, loanAmount);
+            pstmt.setInt(3, rateID);
+            int r = pstmt.executeUpdate();
+
+            System.out.println("rs= " + r);
+
+            if (r == 0)
+                return true;
+            else
+                return false;
+
+        }
+    }
+
 }
