@@ -168,10 +168,13 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 System.out.println(comboBoxChoice);
                 break;
             case "Show Payment Plan":
-                System.out.println(comboBoxChoice);
+                int userIDPaymentPlan = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
+                JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(userIDPaymentPlan + ""),"Payment Plan",3);
                 break;
             case "Edit Payment Plan":
-                System.out.println(comboBoxChoice);
+                int userIDPaymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
+                int paymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input amount of years"));
+                JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(userIDPaymentPlanEdit + "",paymentPlanEdit),"Payment Plan",3);
                 break;
             case "Show Account History":
                 System.out.println(comboBoxChoice);

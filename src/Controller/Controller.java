@@ -5,6 +5,7 @@ import View.ViewGui;
 import View.ViewGuiAdmin;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 
 public class Controller {
@@ -36,8 +37,17 @@ public class Controller {
         return model.returnBalance(accountID,amountToInsert,rateID);
     }
 
-    public int getLoanBalance(int kundId) throws SQLException {
-        return model.returnLoanBalanc(kundId);
+    public double getLoanBalance(int kundId) throws SQLException {
+        return model.returnLoanBalance(kundId);
+    }
+
+    public String showPaymentPlanByAccountId(String accountID) throws SQLException {
+        DecimalFormat dem = new DecimalFormat("#.##");
+        return dem.format(model.paymentPlanFixedYear(Integer.parseInt(accountID)));
+    }
+    public String editPaymentPlanByAccountId(String accountID,int paymentPlan) throws SQLException {
+        DecimalFormat dem = new DecimalFormat("#.##");
+        return dem.format(model.paymentPlanChangeYear(Integer.parseInt(accountID),paymentPlan));
     }
 
     public boolean createUserAccount (int userID, String username, int password) throws SQLException {
