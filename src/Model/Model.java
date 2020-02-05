@@ -30,12 +30,20 @@ public class Model {
     }
 
     public List<String> returnBalanceAmount(String accountID) throws SQLException {
+        return rep.getBalanceAccountsAmountForWhereUserId(Integer.parseInt(accountID));
+    }
+
+    public List<String> returnBalanceName(String accountID) throws SQLException {
         return rep.getBalanceAccountsForWhereUserId(Integer.parseInt(accountID));
     }
 
+    public List<String> returnBalanceNameAndAmount(String accountID) throws SQLException {
+        return rep.getBalanceAccountsAmountAndNameForWhereUserId(Integer.parseInt(accountID));
+    }
 
-    public String returnBalance(int accountID, String amountToInsert, int rateID) throws SQLException {
-        return rep.callBalanceChangeFromDB(accountID,amountToInsert,rateID);
+
+    public String returnBalance(int accountID,String balanceAccountName, String amountToInsert, int rateID) throws SQLException {
+        return rep.callBalanceChangeFromDB(accountID,balanceAccountName,amountToInsert,rateID);
     }
 
 
@@ -63,8 +71,8 @@ public class Model {
         return balanceOwed(returnLoanBalance(accountID), paymentInterval, (returnLoanRate(accountID) / 100));
     }
 
-    public List<String> returnHistoryBalance(int account_id) throws SQLException {
-        return rep.getBalanceHistoryForCurrentMonth(account_id);
+    public List<String> returnHistoryBalance(String account_id) throws SQLException {
+        return rep.getBalanceHistoryForCurrentMonth(Integer.parseInt(account_id));
     }
 
 

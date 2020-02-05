@@ -35,8 +35,8 @@ public class Controller {
     }
 
 
-    public String insertwithdrawal(int accountID, String amountToInsert, int rateID) throws SQLException {
-        return model.returnBalance(accountID, amountToInsert, rateID);
+    public String insertwithdrawal(int accountID, String balanceAccountName, String amountToInsert, int rateID) throws SQLException {
+        return model.returnBalance(accountID,balanceAccountName, amountToInsert, rateID);
     }
 
     public double getLoanBalance(int kundId) throws SQLException {
@@ -85,6 +85,22 @@ public class Controller {
     public String editPaymentPlanByAccountId(String accountID,int paymentPlan) throws SQLException {
         DecimalFormat dem = new DecimalFormat("#.##");
         return dem.format(model.paymentPlanChangeYear(Integer.parseInt(accountID),paymentPlan));
+    }
+
+//    public List<String> getBalanceAmount(String accountID) throws SQLException {
+//        return model.returnBalanceAmount(accountID);
+//    }
+//
+//    public List<String> getBalanceName(String accountID) throws SQLException {
+//        return model.returnBalanceName(accountID);
+//    }
+
+    public List<String> getBalanceNameAndAmount(String accountID) throws SQLException {
+        return model.returnBalanceNameAndAmount(accountID);
+    }
+
+    public List<String> getBalanceHistory(String accountID) throws SQLException {
+        return model.returnHistoryBalance(accountID);
     }
 }
 

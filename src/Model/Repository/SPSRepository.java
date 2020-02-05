@@ -168,17 +168,18 @@ public class SPSRepository {
 
     // Currency methods
 
-    public String callBalanceChangeFromDB(int accountID, String amountToInsert, int rateID) throws SQLException {
+    public String callBalanceChangeFromDB(int accountID, String balanceAccountName, String amountToInsert, int rateID) throws SQLException {
 
-        String sqlQuery = "call balanceChange(?,?,?)";
+        String sqlQuery = "call balanceChange(?,?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
             ResultSet rs;
             pstmt.setInt(1, accountID);
-            pstmt.setInt(2, Integer.parseInt(amountToInsert));
-            pstmt.setInt(3,rateID);
+            pstmt.setString(2, balanceAccountName);
+            pstmt.setInt(3, Integer.parseInt(amountToInsert));
+            pstmt.setInt(4,rateID);
             rs = pstmt.executeQuery();
 
             return rs+"";
@@ -313,6 +314,44 @@ public class SPSRepository {
 
             while (rss.next()){
                 accountList.add(rss.getString("balance_account_name"));
+            }
+        }
+        return accountList;
+    }
+    public List<String> getBalanceAccountsAmountForWhereUserId(int account_id) throws SQLException {
+        List<String> accountList = new ArrayList<>();
+        String sqlQuery = "select amount  from account_balance" +
+                " where account_id = ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setInt(1, account_id);
+            ResultSet rss;
+            rss = stmt.executeQuery();
+
+            while (rss.next()){
+                accountList.add(rss.getString("amount"));
+            }
+        }
+        return accountList;
+    }
+
+    public List<String> getBalanceAccountsAmountAndNameForWhereUserId(int account_id) throws SQLException {
+        List<String> accountList = new ArrayList<>();
+        String sqlQuery = "select balance_account_name, amount  from account_balance" +
+                " where account_id = ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setInt(1, account_id);
+            ResultSet rss;
+            rss = stmt.executeQuery();
+
+            while (rss.next()){
+                accountList.add(rss.getString("balance_account_name"));
+                accountList.add(rss.getString("amount"));
             }
         }
         return accountList;

@@ -183,7 +183,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 amount = JOptionPane.showInputDialog(null, "Input amount to withdraw");
                 customerPin = JOptionPane.showInputDialog(null, "Input Customer PIN");
                 customerAccountID = cont.getAccountByString(customerPin);
-                System.out.println(cont.insertwithdrawal(customerAccountID, amount, 1));
+               // System.out.println(cont.insertwithdrawal(customerAccountID, amount, 1));
                 break;
             case "Approve loan":
                 System.out.println(comboBoxChoice);
