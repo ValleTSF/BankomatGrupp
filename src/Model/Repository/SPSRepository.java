@@ -2,6 +2,8 @@ package Model.Repository;
 
 import java.io.FileInputStream;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class SPSRepository {
@@ -171,32 +173,6 @@ public class SPSRepository {
         }
 
     }
-    public int callgetLoanAmountFromDB(String accountID) throws SQLException {
-
-        String sqlQuery = "call sp_get_loan_amount_by_account_id(?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
-            pstmt.setInt(1, Integer.parseInt(accountID));
-            pstmt.registerOutParameter(2, Types.INTEGER);
-            pstmt.execute();
-            return pstmt.getInt(2);
-        }
-    }
-    public double callgetLoanRateFromDB(String accountID) throws SQLException {
-
-        String sqlQuery = "call sp_get_rate_by_account_id(?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
-            pstmt.setInt(1, Integer.parseInt(accountID));
-            pstmt.registerOutParameter(2, Types.DOUBLE);
-            pstmt.execute();
-            return pstmt.getDouble(2);
-        }
-    }
 
     public void callPayBackLoanFromDB(int account_loan_id, int pay_back_amount) throws SQLException {
 
@@ -213,8 +189,27 @@ public class SPSRepository {
             System.out.println(rs);
 
         }
-
     }
+
+        public int callSpGetLoanFromDB(String account_id) throws SQLException {
+
+            String sqlQuery = "call sp_get_loan_amount_by_account_id(?,?)";
+            try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                    pro.getProperty("login"),
+                    pro.getProperty("password"));
+                 CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+
+                pstmt.setString(1, account_id);
+                pstmt.registerOutParameter(2, Types.INTEGER);
+                pstmt.execute();
+
+                return pstmt.getInt(2);
+
+            }
+
+        }
+
+
 
     public static void main(String[] args) throws SQLException {
 
