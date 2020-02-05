@@ -238,7 +238,6 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 String[] pickedEmailForPaymentPlan = cont.getDropDownEmail();
                 String emailForPaymentPlan = pickedEmailForPaymentPlan[getForPaymentPlan];
                 JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlan)+""),"Payment Plan",3);
-                System.out.println(comboBoxChoice);
                 break;
 
             case "Edit Payment Plan":
@@ -249,7 +248,6 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 String emailForPaymentPlanEdit = pickedEmailForPaymentPlanEdit[getForPaymentPlanEdit];
                 int paymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input amount of years"));
                 JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlanEdit)+"",paymentPlanEdit),"Payment Plan",3);
-                System.out.println(comboBoxChoice);
                 break;
             case "Show Account History":
                 JComboBox emailList = new JComboBox(cont.getDropDownEmail());
