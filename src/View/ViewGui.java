@@ -11,21 +11,27 @@ import java.sql.SQLException;
 public class ViewGui extends JFrame implements ActionListener {
     Controller cont;
     JButton login;
-    JButton Ok;
+    JButton withdrawalBack;
+    JButton withdrawalConfirm;
     JButton logOut;
-    JButton CheckBalance;
+    JButton checkBalance;
+    JButton checkBalanceBack;
     JButton checkLoan;
+    JButton checkLoanBack;
     JButton withdrawal;
-    JPanel loginpanel;
-    JPanel choicePannel;
+    JPanel loginPanel;
+    JPanel choicePanel;
+    JPanel withdrawalPanel;
     JPanel checkBalancePanel;
     JPanel checkLoanPanel;
-    JTextField pass;
-    JLabel password;
-    JLabel Amount;
-    JTextField txtAmount;
-    JTextArea showResult;
-    JTextArea showResult2;
+    JTextField passwordTextField;
+    JLabel passwordLabel;
+    JLabel amountLabel;
+    JTextField amountTextField;
+    JTextArea showWithdrawal;
+    JTextArea showLoan;
+    JTextArea showBalanceAmount;
+    JTextArea checkBalanceAmount;
     int kundId;
 
     public ViewGui() {
@@ -33,64 +39,84 @@ public class ViewGui extends JFrame implements ActionListener {
         cont = new Controller(this);
 
         setResizable(false);
-        loginpanel = new JPanel();
-        choicePannel = new JPanel();
+        loginPanel = new JPanel();
+        choicePanel = new JPanel();
         checkLoanPanel = new JPanel();
-        checkBalancePanel = new JPanel(new FlowLayout());
-        add(loginpanel);
+        checkBalancePanel = new JPanel();
+        withdrawalPanel = new JPanel(new FlowLayout());
+        add(loginPanel);
         login = new JButton("Login");
-        Ok = new JButton("OK");
-        CheckBalance = new JButton("Check Balance");
+        withdrawalBack = new JButton("Back");
+        checkLoanBack = new JButton("Back");
+        withdrawalConfirm = new JButton("Confirm");
+        checkBalance = new JButton("Check Balance");
         checkLoan = new JButton("check Loan");
         withdrawal = new JButton("withdrawal");
         logOut = new JButton("Log out");
-        pass = new JPasswordField(15);
-        password = new JLabel("PIN - ");
-        txtAmount = new JTextField(15);
-        Amount = new JLabel("Amount - ");
-        showResult = new JTextArea();
-        showResult2 = new JTextArea();
-        showResult.setEditable(false);
-        showResult2.setEditable(false);
+        checkBalanceBack = new JButton("Back");
+        passwordTextField = new JPasswordField(15);
+        passwordLabel = new JLabel("PIN - ");
+        amountTextField = new JTextField(15);
+        amountLabel = new JLabel("Amount - ");
+        showWithdrawal = new JTextArea();
+        showLoan = new JTextArea();
+        showBalanceAmount = new JTextArea();
+        checkBalanceAmount = new JTextArea();
+        showWithdrawal.setEditable(false);
+        showLoan.setEditable(false);
+        showBalanceAmount.setEditable(false);
+        checkBalanceAmount.setEditable(false);
 
         setSize(300, 200);
         setLocation(500, 280);
-        loginpanel.setLayout(null);
+        loginPanel.setLayout(null);
 
 
-        pass.setBounds(70, 65, 150, 20);
+        passwordTextField.setBounds(70, 65, 150, 20);
         login.setBounds(110, 100, 80, 20);
-        Ok.setBounds(110, 100, 80, 20);
-        password.setBounds(20, 63, 80, 20);
-        showResult.setBounds(20, 63, 80, 20);
-        showResult2.setBounds(20, 63, 80, 20);
-        Amount.setBounds(20, 63, 80, 20);
+        withdrawalConfirm.setBounds(110, 100, 80, 20);
+        passwordLabel.setBounds(20, 63, 80, 20);
+        showWithdrawal.setBounds(20, 63, 80, 20);
+        showBalanceAmount.setBounds(20, 63, 80, 20);
+        showLoan.setBounds(20, 63, 80, 20);
+        amountLabel.setBounds(20, 63, 80, 20);
         login.addActionListener(this);
         logOut.addActionListener(this);
         withdrawal.addActionListener(this);
         checkLoan.addActionListener(this);
-        Ok.addActionListener(this);
-        loginpanel.add(login);
-        loginpanel.add(pass);
-        loginpanel.add(password);
+        withdrawalConfirm.addActionListener(this);
+        withdrawalBack.addActionListener(this);
+        checkLoanBack.addActionListener(this);
+        checkBalance.addActionListener(this);
+        checkBalanceBack.addActionListener(this);
+        loginPanel.add(login);
+        loginPanel.add(passwordTextField);
+        loginPanel.add(passwordLabel);
 
-        choicePannel.add(CheckBalance);
-        choicePannel.add(checkLoan);
-        choicePannel.add(withdrawal);
-        choicePannel.add(logOut);
+        choicePanel.add(checkBalance);
+        choicePanel.add(checkLoan);
+        choicePanel.add(withdrawal);
+        choicePanel.add(logOut);
 
-        checkBalancePanel.add(Amount,BorderLayout.WEST);
-        checkBalancePanel.add(txtAmount,BorderLayout.EAST);
-        checkBalancePanel.add(Ok,BorderLayout.CENTER);
-        checkBalancePanel.add(showResult,BorderLayout.SOUTH);
+        withdrawalPanel.add(amountLabel, BorderLayout.NORTH);
+        withdrawalPanel.add(amountTextField, BorderLayout.SOUTH);
+        withdrawalPanel.add(withdrawalConfirm, BorderLayout.NORTH);
+        withdrawalPanel.add(withdrawalBack, BorderLayout.NORTH);
+        withdrawalPanel.add(showWithdrawal, BorderLayout.WEST);
+        withdrawalPanel.add(showBalanceAmount, BorderLayout.EAST);
 
-        checkLoanPanel.add(showResult2,BorderLayout.SOUTH);
+        checkLoanPanel.add(showLoan, BorderLayout.CENTER);
+        checkLoanPanel.add(checkLoanBack, BorderLayout.SOUTH);
+
+        checkBalancePanel.add(checkBalanceAmount, BorderLayout.CENTER);
+        checkBalancePanel.add(checkBalanceBack,BorderLayout.SOUTH);
+
 
 
         setVisible(true);
-        loginpanel.setVisible(true);
-        choicePannel.setVisible(false);
-        checkBalancePanel.setVisible(false);
+        loginPanel.setVisible(true);
+        choicePanel.setVisible(false);
+        withdrawalPanel.setVisible(false);
         checkLoanPanel.setVisible(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -106,12 +132,12 @@ public class ViewGui extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == login) {
             try {
-                if (cont.getAccountByString(pass.getText()) > 0) {
-                    kundId = cont.getAccountByString(pass.getText());
-                    add(choicePannel);
+                if (cont.getAccountByString(passwordTextField.getText()) > 0) {
+                    kundId = cont.getAccountByString(passwordTextField.getText());
+                    add(choicePanel);
                     setTitle("Customer choice");
-                    loginpanel.setVisible(false);
-                    choicePannel.setVisible(true);
+                    loginPanel.setVisible(false);
+                    choicePanel.setVisible(true);
 
                 } else
                     JOptionPane.showMessageDialog(null, "kund finns inte");
@@ -123,36 +149,104 @@ public class ViewGui extends JFrame implements ActionListener {
 
 
         if (e.getSource() == logOut) {
-            add(loginpanel);
+            add(loginPanel);
             setTitle("Login Customer");
-            loginpanel.setVisible(true);
-            choicePannel.setVisible(false);
+            loginPanel.setVisible(true);
+            choicePanel.setVisible(false);
+            checkBalancePanel.setVisible(false);
+            passwordTextField.setText("");
         }
 
         if (e.getSource() == withdrawal) {
+            add(withdrawalPanel);
+            withdrawalPanel.setVisible(true);
+            choicePanel.setVisible(false);
+            loginPanel.setVisible(false);
+            checkBalancePanel.setVisible(false);
+            try {
+
+                showBalanceAmount.setText("Nuvarande saldo: \n" + cont.getBalanceAmount(kundId + ""));
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        if (e.getSource() == withdrawalBack) {
+            add(loginPanel);
+            setTitle("Customer choice");
+            withdrawalPanel.setVisible(false);
+            choicePanel.setVisible(true);
+            checkBalancePanel.setVisible(false);
+            showWithdrawal.setText("");
+            showBalanceAmount.setText("");
+            amountTextField.setText("");
+
+        }
+        if (e.getSource() == checkLoanBack) {
+            add(choicePanel);
+            choicePanel.setVisible(true);
+            checkLoanPanel.setVisible(false);
+            withdrawalPanel.setVisible(false);
+            loginPanel.setVisible(false);
+            checkBalancePanel.setVisible(false);
+            showLoan.setText("");
+        }
+
+        if (e.getSource() == checkBalance) {
             add(checkBalancePanel);
             checkBalancePanel.setVisible(true);
-            choicePannel.setVisible(false);
-            loginpanel.setVisible(false);
-        }
-        if (e.getSource() == Ok) {
+            choicePanel.setVisible(false);
+            checkLoanPanel.setVisible(false);
+            withdrawalPanel.setVisible(false);
+            loginPanel.setVisible(false);
             try {
-                cont.insertwithdrawal(kundId,"-"+ txtAmount.getText(), 1);
-                showResult.append("-"+txtAmount.getText()+"\n");
+                checkBalanceAmount.setText("Nuvarande saldo: \n" + cont.getBalanceAmount(kundId + ""));
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if (e.getSource() == checkBalanceBack) {
+            add(choicePanel);
+            choicePanel.setVisible(true);
+            checkBalancePanel.setVisible(false);
+            checkLoanPanel.setVisible(false);
+            withdrawalPanel.setVisible(false);
+            loginPanel.setVisible(false);
+            showLoan.setText("");
+        }
+
+        if (e.getSource() == withdrawalConfirm) {
+            try {
+                if (!(Integer.parseInt(amountTextField.getText()) > cont.getBalanceAmount(kundId + ""))) {
+                    try {
+                        System.out.println("Uttag: " + Integer.parseInt(amountTextField.getText()) + "\nSaldo:" + cont.getBalanceAmount(kundId + ""));
+
+                        cont.insertwithdrawal(kundId, "-" + amountTextField.getText(), 1);
+                        showWithdrawal.append(amountTextField.getText() + ", har dragits från ditt konto\n");
+                        showBalanceAmount.setText("Nuvarande saldo: \n" + cont.getBalanceAmount(kundId + ""));
+                        amountTextField.setText("");
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                } else
+                    showWithdrawal.append(amountTextField.getText() + ", gick inte att ta ut, för lågt saldo" + "\n");
+
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
 
         }
-        if(e.getSource() == checkLoan){
+        if (e.getSource() == checkLoan) {
             add(checkLoanPanel);
             checkLoanPanel.setVisible(true);
+            withdrawalPanel.setVisible(false);
+            choicePanel.setVisible(false);
+            loginPanel.setVisible(false);
             checkBalancePanel.setVisible(false);
-            choicePannel.setVisible(false);
-            loginpanel.setVisible(false);
             try {
                 int loan = cont.getLoanBalance(kundId);
-                showResult2.append(loan +" Kvar att betala"+"\n");
+                showLoan.setText("Du har: " + loan + " kvar att betala." + "\n");
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

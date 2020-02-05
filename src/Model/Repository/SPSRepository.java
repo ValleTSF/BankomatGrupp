@@ -209,6 +209,25 @@ public class SPSRepository {
 
         }
 
+
+    public int callSpGetBalanceAmountFromDB(String account_id) throws SQLException {
+
+        String sqlQuery = "call sp_get_balance_amount_by_account_id(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+
+            pstmt.setString(1, account_id);
+            pstmt.registerOutParameter(2, Types.INTEGER);
+            pstmt.execute();
+
+            return pstmt.getInt(2);
+
+        }
+
+    }
+
     // Currency methods
 
     public List<String> callGetBalanceHistoryForCurrentMonth(int account_id) throws SQLException {
@@ -238,8 +257,9 @@ public class SPSRepository {
     public static void main(String[] args) throws SQLException {
         SPSRepository re = new SPSRepository();
       //  re.callGetBalanceHistoryForCurrentMonth(1);
-        List<String> ee = re.callGetBalanceHistoryForCurrentMonth(1);
-        ee.forEach(System.out::println);
+//        List<String> ee = re.callGetBalanceHistoryForCurrentMonth(1);
+//        ee.forEach(System.out::println);
+        System.out.println(re.callSpGetBalanceAmountFromDB("1"));
 
 
     }
