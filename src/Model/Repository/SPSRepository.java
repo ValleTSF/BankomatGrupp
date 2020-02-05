@@ -78,20 +78,24 @@ public class SPSRepository {
 
     // Account Methods
 
-    public void callCreateUserAccountFromDB(int userID, String newUserName, int newPassword) throws SQLException {
+    public Boolean callCreateUserAccountFromDB(int userID, String newUserName, int newPassword) throws SQLException {
 
         String sqlQuery = "call createUserAccount(?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
             pstmt.setInt(1, userID);
             pstmt.setString(2, newUserName);
             pstmt.setInt(3, newPassword);
-            rs = pstmt.executeQuery();
+            int r = pstmt.executeUpdate();
 
-            System.out.println(rs);
+            System.out.println("rs= " + r);
+
+            if (r == 0)
+                return true;
+            else
+                return false;
 
         }
 
@@ -316,6 +320,7 @@ public class SPSRepository {
         //2020-02-05 och 2020-02-06
         List<String> his = re.getBalanceHistoryBetweenTwoDates(1,"2020-02-05","2020-02-06");
         his.forEach(System.out::println);
+        re.callCreateUserAccountFromDB(1,"SwagMAnJones", 9999);
     }
 
 }

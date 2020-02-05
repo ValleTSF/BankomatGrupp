@@ -1,5 +1,6 @@
 package Controller;
 import Model.Model;
+import Model.Repository.SPSRepository;
 import View.ViewGui;
 import View.ViewGuiAdmin;
 
@@ -11,6 +12,7 @@ public class Controller {
     private ViewGui view;
     private ViewGuiAdmin viewAdmin;
     private Model model = new Model();
+    private SPSRepository spsRepository = new SPSRepository();
 
     public Controller(ViewGui view){
         this.view = view;
@@ -36,6 +38,10 @@ public class Controller {
 
     public int getLoanBalance(int kundId) throws SQLException {
         return model.returnLoanBalanc(kundId);
+    }
+
+    public boolean createUserAccount (int userID, String username, int password) throws SQLException {
+        return spsRepository.callCreateUserAccountFromDB(userID, username, password);
     }
 }
 
