@@ -211,43 +211,6 @@ public class SPSRepository {
 
     // Currency methods
 
-    public String callBalanceChangeFromDB(int accountID, String amountToInsert, int rateID) throws SQLException {
-
-        String sqlQuery = "call balanceChange(?,?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
-            pstmt.setInt(1, accountID);
-            pstmt.setInt(2, Integer.parseInt(amountToInsert));
-            pstmt.setInt(3, rateID);
-            rs = pstmt.executeQuery();
-
-            return rs + "";
-
-        }
-
-    }
-
-    public void callPayBackLoanFromDB(int account_loan_id, int pay_back_amount) throws SQLException {
-
-        String sqlQuery = "call balanceChange(?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
-            pstmt.setInt(1, account_loan_id);
-            pstmt.setInt(2, pay_back_amount);
-            rs = pstmt.executeQuery();
-
-            System.out.println(rs);
-
-        }
-
-    }
-
     public List<String> callGetBalanceHistoryForCurrentMonth(int account_id) throws SQLException {
         List<String> his = new ArrayList<>();
         String sqlQuery = " select concat(account_balance.createdOn,' ',account_balance.amount) as balance" +
