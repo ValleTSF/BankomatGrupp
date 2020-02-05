@@ -209,35 +209,16 @@ public class SPSRepository {
 
         }
 
-
-    public int callSpGetBalanceAmountFromDB(String account_id) throws SQLException {
-
-        String sqlQuery = "call sp_get_balance_amount_by_account_id(?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
-
-            pstmt.setString(1, account_id);
-            pstmt.registerOutParameter(2, Types.INTEGER);
-            pstmt.execute();
-
-            return pstmt.getInt(2);
-
-        }
-
-    }
-
     // Currency methods
 
-    public List<String> callGetBalanceHistoryForCurrentMonth(int account_id) throws SQLException {
+
+    public List<String> getBalanceHistoryForCurrentMonth(int account_id) throws SQLException {
         List<String> his = new ArrayList<>();
-        String sqlQuery = " select concat(account_balance.createdOn,' ',account_balance.amount) as balance" +
-                " from account_balance" +
-                " inner join account on account_balance.account_id = account.id" +
-                " inner join user on account.user_id = user.id" +
-                " where account.id = ?" +
-                " and month(account_balance.createdOn) = month(now())";
+        String sqlQuery = "select concat(transactions.createdOn,' ', transactions.amount) as balance\n" +
+                "                from transactions\n" +
+                "                inner join account on transactions.account_id = account.id\n" +
+                "                where account.id = ? and account_loan_id is null\n" +
+                "                and month(transactions.createdOn) = month(now())";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
@@ -253,14 +234,93 @@ public class SPSRepository {
         return his;
     }
 
+    // formatet på datum måste vara åååå-mm-dd, testa mellan 2020-02-05 och 2020-02-06
+    public List<String> getBalanceHistoryBetweenTwoDates(int account_id, String first_date, String second_date) throws SQLException {
+        List<String> his = new ArrayList<>();
+        String sqlQuery = "select concat(transactions.createdOn,' ', transactions.amount) as balance " +
+                "                from transactions " +
+                "                inner join account on transactions.account_id = account.id" +
+                "                where account.id = ? and account_loan_id is null" +
+                "                and date(transactions.createdOn) >= ?" +
+                "                AND date(transactions.createdOn) <= ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setInt(1, account_id);
+            stmt.setString(2,first_date);
+            stmt.setString(3, second_date);
+            ResultSet rss;
+            rss = stmt.executeQuery();
+
+            while (rss.next()){
+                his.add(rss.getString("balance"));
+            }
+        }
+        return his;
+    }
+
+    // formatet på datum måste vara åååå-mm-dd, testa mellan 2020-02-05 och 2020-02-06
+    public List<String> getLoanHistoryBetweenTwoDates(int account_id, String first_date, String second_date) throws SQLException {
+        List<String> his = new ArrayList<>();
+        String sqlQuery = "select concat(transactions.createdOn,' ', transactions.amount) as balance\n" +
+                "from transactions\n" +
+                "         inner join account on transactions.account_id = account.id\n" +
+                "where account.id = 1 and account_balance_id is null\n" +
+                "  and date(transactions.createdOn) >= ?\n" +
+                "  AND date(transactions.createdOn) <= ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setInt(1, account_id);
+            stmt.setString(2,first_date);
+            stmt.setString(3, second_date);
+            ResultSet rss;
+            rss = stmt.executeQuery();
+
+            while (rss.next()){
+                his.add(rss.getString("balance"));
+            }
+        }
+        return his;
+    }
+
+    public List<String> getBalanceAccountsForWhereUserId(int account_id) throws SQLException {
+        List<String> accountList = new ArrayList<>();
+        String sqlQuery = "select balance_account_name  from account_balance" +
+                " where account_id = ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setInt(1, account_id);
+            ResultSet rss;
+            rss = stmt.executeQuery();
+
+            while (rss.next()){
+                accountList.add(rss.getString("balance_account_name"));
+            }
+        }
+        return accountList;
+    }
+
+    public String[] listToArray(int account_id) throws SQLException {
+        List<String> accountList = getBalanceAccountsForWhereUserId(account_id);
+        return accountList.toArray(new String[getBalanceAccountsForWhereUserId(account_id).size()]);
+    }
+
+    public int callSpGetBalanceAmountFromDB(String accountID) {
+        
+    }
 
     public static void main(String[] args) throws SQLException {
         SPSRepository re = new SPSRepository();
-      //  re.callGetBalanceHistoryForCurrentMonth(1);
-//        List<String> ee = re.callGetBalanceHistoryForCurrentMonth(1);
-//        ee.forEach(System.out::println);
-        System.out.println(re.callSpGetBalanceAmountFromDB("1"));
 
-
+        //2020-02-05 och 2020-02-06
+        List<String> his = re.getBalanceHistoryBetweenTwoDates(1,"2020-02-05","2020-02-06");
+        his.forEach(System.out::println);
     }
+
+
 }
