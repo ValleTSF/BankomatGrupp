@@ -5,6 +5,7 @@ import View.ViewGui;
 import View.ViewGuiAdmin;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class Controller {
@@ -31,7 +32,7 @@ public class Controller {
         return model.returnAccountType(userName, password).equalsIgnoreCase("admin");
     }
 
-    public int getBalanceAmount(String accountID) throws SQLException {
+    public List<String> getBalanceAmount(String accountID) throws SQLException {
         return model.returnBalanceAmount(accountID);
     }
 
@@ -46,6 +47,10 @@ public class Controller {
 
     public boolean createUserAccount (int userID, String username, int password) throws SQLException {
         return spsRepository.callCreateUserAccountFromDB(userID, username, password);
+    }
+
+    public List<String> getHistoryBalance(int account_id) throws SQLException {
+        return model.returnHistoryBalance(account_id);
     }
 }
 

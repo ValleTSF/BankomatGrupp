@@ -32,11 +32,16 @@ public class ViewGui extends JFrame implements ActionListener {
     JTextArea showLoan;
     JTextArea showBalanceAmount;
     JTextArea checkBalanceAmount;
+    JTextArea getCheckBalanceHistory;
+    JComboBox choiceAccount;
+    String[] AccountComboBoxOptions;
     int kundId;
 
     public ViewGui() {
         super("Login Customer");
         cont = new Controller(this);
+
+        AccountComboBoxOptions = new String[]{"Add Customer"};
 
         setResizable(false);
         loginPanel = new JPanel();
@@ -62,10 +67,12 @@ public class ViewGui extends JFrame implements ActionListener {
         showLoan = new JTextArea();
         showBalanceAmount = new JTextArea();
         checkBalanceAmount = new JTextArea();
+        getCheckBalanceHistory = new JTextArea();
         showWithdrawal.setEditable(false);
         showLoan.setEditable(false);
         showBalanceAmount.setEditable(false);
         checkBalanceAmount.setEditable(false);
+        getCheckBalanceHistory.setEditable(false);
 
         setSize(300, 200);
         setLocation(500, 280);
@@ -89,6 +96,7 @@ public class ViewGui extends JFrame implements ActionListener {
         checkLoanBack.addActionListener(this);
         checkBalance.addActionListener(this);
         checkBalanceBack.addActionListener(this);
+        choiceAccount = new JComboBox(AccountComboBoxOptions);
         loginPanel.add(login);
         loginPanel.add(passwordTextField);
         loginPanel.add(passwordLabel);
@@ -104,12 +112,16 @@ public class ViewGui extends JFrame implements ActionListener {
         withdrawalPanel.add(withdrawalBack, BorderLayout.NORTH);
         withdrawalPanel.add(showWithdrawal, BorderLayout.WEST);
         withdrawalPanel.add(showBalanceAmount, BorderLayout.EAST);
+        withdrawalPanel.add(choiceAccount, BorderLayout.EAST);
 
         checkLoanPanel.add(showLoan, BorderLayout.CENTER);
         checkLoanPanel.add(checkLoanBack, BorderLayout.SOUTH);
 
         checkBalancePanel.add(checkBalanceAmount, BorderLayout.CENTER);
         checkBalancePanel.add(checkBalanceBack,BorderLayout.SOUTH);
+        checkBalancePanel.add(getCheckBalanceHistory,BorderLayout.SOUTH);
+
+
 
 
 
@@ -165,7 +177,7 @@ public class ViewGui extends JFrame implements ActionListener {
             checkBalancePanel.setVisible(false);
             try {
 
-                showBalanceAmount.setText("Nuvarande saldo: \n" + cont.getBalanceAmount(kundId + ""));
+                showBalanceAmount.append("Nuvarande saldo: \n" + cont.getBalanceAmount(kundId + ""));
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -200,7 +212,7 @@ public class ViewGui extends JFrame implements ActionListener {
             withdrawalPanel.setVisible(false);
             loginPanel.setVisible(false);
             try {
-                checkBalanceAmount.setText("Nuvarande saldo: \n" + cont.getBalanceAmount(kundId + ""));
+                checkBalanceAmount.append("Nuvarande saldo: \n" + cont.getBalanceAmount(kundId + ""));
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -217,6 +229,7 @@ public class ViewGui extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == withdrawalConfirm) {
+
             try {
                 if (!(Integer.parseInt(amountTextField.getText()) > cont.getBalanceAmount(kundId + ""))) {
                     try {
