@@ -151,7 +151,7 @@ public class ViewGui extends JFrame implements ActionListener {
             choicePannel.setVisible(false);
             loginpanel.setVisible(false);
             try {
-                int loan = cont.getLoanBalance(kundId);
+                double loan = cont.getLoanBalance(kundId);
                 showResult2.append(loan +" Kvar att betala"+"\n");
             } catch (SQLException ex) {
                 ex.printStackTrace();

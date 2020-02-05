@@ -20,37 +20,42 @@ public class SPSRepository {
 
     // User Methods
 
-    public void callCreateUserFromDB(String user_first_name, String user_last_name, String user_mail) throws SQLException {
+    public Boolean callCreateUserFromDB(String user_first_name, String user_last_name, String user_mail) throws SQLException {
 
         String sqlQuery = "call create_User(?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
+//            ResultSet rs;
             pstmt.setString(1, user_first_name);
             pstmt.setString(2, user_last_name);
             pstmt.setString(3, user_mail);
-            rs = pstmt.executeQuery();
+            int r = pstmt.executeUpdate();
 
-            System.out.println(rs);
+            if (r == 0)
+                return true;
+            else
+                return false;
 
         }
 
     }
 
-    public void callDeleteUserFromDB(int user_id) throws SQLException {
+    public Boolean callDeleteUserFromDB(int user_id) throws SQLException {
 
         String sqlQuery = "call delete_User(?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
             pstmt.setInt(1, user_id);
-            rs = pstmt.executeQuery();
+            int r = pstmt.executeUpdate();
 
-            System.out.println(rs);
+            if (r == 0)
+                return true;
+            else
+                return false;
 
         }
 
@@ -96,23 +101,27 @@ public class SPSRepository {
                 return true;
             else
                 return false;
-
         }
 
     }
 
-    public void callDeleteUserAccountFromDB(int userID) throws SQLException {
+    public boolean callDeleteUserAccountFromDB(int userID) throws SQLException {
 
         String sqlQuery = "call deleteUserAccount(?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
             pstmt.setInt(1, userID);
-            rs = pstmt.executeQuery();
 
-            System.out.println(rs);
+            int r = pstmt.executeUpdate();
+
+            System.out.println("rs= " + r);
+
+            if (r == 0)
+                return true;
+            else
+                return false;
 
         }
 
@@ -312,6 +321,113 @@ public class SPSRepository {
     public String[] listToArray(int account_id) throws SQLException {
         List<String> accountList = getBalanceAccountsForWhereUserId(account_id);
         return accountList.toArray(new String[getBalanceAccountsForWhereUserId(account_id).size()]);
+    }
+
+    public String[] balanceAccountlistToArray(int account_id) throws SQLException {
+        List<String> accountList = getBalanceAccountsForWhereUserId(account_id);
+        return accountList.toArray(new String[getBalanceAccountsForWhereUserId(account_id).size()]);
+    }
+
+    public String[] emaillistToArray() throws SQLException {
+        List<String> emailList = getAllusersEmailFromDb();
+        return emailList.toArray(new String[emailList.size()]);
+    }
+    public List<String> getAllusersEmailFromDb() throws SQLException  {
+        List<String> emailList = new ArrayList<>();
+        String sqlQuery = "select email from bankomat.user";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             Statement stmt = con.createStatement()) {
+            ResultSet rss;
+            rss = stmt.executeQuery(sqlQuery);
+
+            while (rss.next()) {
+                emailList.add(rss.getString("email"));
+            }
+
+        }
+        return emailList;
+    }
+    public int getAccountIDWhereUserEmail(String email_adress) throws SQLException {
+        String sqlQuery = "select account.id from account " +
+                "inner join user on account.user_id = user.id " +
+                "where email = ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setString(1, email_adress);
+            ResultSet rss = stmt.executeQuery();
+            rss.next();
+            return rss.getInt("account.id");
+        }
+    }
+
+    public int getAccountIDWhereBalanceAccount(String accountName, String email) throws SQLException {
+        String sqlQuery = "select account.id from account " +
+                "inner join account_balance on account.id = account_id " +
+                "inner join user on account.user_id = user.id " +
+                "where balance_account_name = ? " +
+                "and email = ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setString(1, accountName);
+            stmt.setString(2, email);
+            ResultSet rss = stmt.executeQuery();
+            rss.next();
+
+            return rss.getInt("account.id");
+        }
+    }
+    public void callChangeBalanceRateFromDB(String balanceAccountName, int rateID) throws SQLException {
+
+        String sqlQuery = "call sp_change_balance_rate_by_account_name(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setString(1, balanceAccountName);
+            pstmt.setInt(2, rateID);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+    }
+    public void callChangeLoanRateFromDB(int accountID, int rateID) throws SQLException {
+
+        String sqlQuery = "call sp_change_balance_rate_by_account_name(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, accountID);
+            pstmt.setInt(2, rateID);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+    }
+
+    public double callSpGetLoanRateFromDB(String account_id) throws SQLException {
+
+        String sqlQuery = "call sp_get_rate_by_account_id(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+
+            pstmt.setString(1, account_id);
+            pstmt.registerOutParameter(2, Types.DOUBLE);
+            pstmt.execute();
+            return pstmt.getInt(2);
+        }
     }
 
     public static void main(String[] args) throws SQLException {
