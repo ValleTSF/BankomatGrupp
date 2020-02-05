@@ -1,5 +1,7 @@
 package Model.Repository;
 
+import Pojos.Rate;
+
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
@@ -173,6 +175,55 @@ public class SPSRepository {
     // Currency methods
 
     public String callBalanceChangeFromDB(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
+    public List<Rate> getRates() throws SQLException {
+        List<Rate> rateList = new ArrayList<>();
+        String sqlQuery = "select * from rate";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement stmt = con.prepareCall(sqlQuery)) {
+            ResultSet rss;
+            rss = stmt.executeQuery();
+
+            while (rss.next()){
+                rateList.add(new Rate(rss.getDouble("rate"),rss.getString("rateType")));
+            }
+        }
+        return rateList;
+    }
+
+
+    public void callChangeBalanceRateFromDB(String balanceAccountName, int rateID) throws SQLException {
+
+        String sqlQuery = "call sp_change_balance_rate_by_account_name(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setString(1, balanceAccountName);
+            pstmt.setInt(2, rateID);
+            rs = pstmt.executeQuery();
+        }
+    }
+    public void callChangeLoanRateFromDB(int accountID, int rateID) throws SQLException {
+
+        String sqlQuery = "call sp_change_loan_rate_by_account_id(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+            ResultSet rs;
+            pstmt.setInt(1, accountID);
+            pstmt.setInt(2, rateID);
+            rs = pstmt.executeQuery();
+
+            System.out.println(rs);
+
+        }
+    }
+
+    public String callBalanceChangeFromDB(int accountID, String amountToInsert, int rateID) throws SQLException {
 
         String sqlQuery = "call balanceChange(?,?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
@@ -226,9 +277,22 @@ public class SPSRepository {
         }
 
     }
+            }
+        }
+        public double callSpGetLoanRateFromDB(String account_id) throws SQLException {
 
-    // Currency methods
+            String sqlQuery = "call sp_get_rate_by_account_id(?,?)";
+            try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                    pro.getProperty("login"),
+                    pro.getProperty("password"));
+                 CallableStatement pstmt = con.prepareCall(sqlQuery)) {
 
+                pstmt.setString(1, account_id);
+                pstmt.registerOutParameter(2, Types.DOUBLE);
+                pstmt.execute();
+                return pstmt.getInt(2);
+            }
+        }
 
     public List<String> getBalanceHistoryForCurrentMonth(int account_id) throws SQLException {
         List<String> his = new ArrayList<>();
@@ -477,21 +541,14 @@ public class SPSRepository {
 
     public double callSpGetLoanRateFromDB(String account_id) throws SQLException {
 
-        String sqlQuery = "call sp_get_rate_by_account_id(?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
-
-            pstmt.setString(1, account_id);
-            pstmt.registerOutParameter(2, Types.DOUBLE);
-            pstmt.execute();
-            return pstmt.getInt(2);
-        }
-    }
 
     public static void main(String[] args) throws SQLException {
         SPSRepository re = new SPSRepository();
+
+            //2020-02-05 och 2020-02-06
+            //List<String> his = re.getBalanceHistoryBetweenTwoDates(1,"2020-02-05","2020-02-06");
+            //his.forEach(System.out::println);
+            //re.callCreateUserAccountFromDB(1,"SwagMAnJones", 9999);
 
         //2020-02-05 och 2020-02-06
 //        List<String> his = re.getBalanceHistoryBetweenTwoDates(1, 19 ,"2020-02-05","2020-02-06");

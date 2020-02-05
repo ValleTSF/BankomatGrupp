@@ -7,8 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="mysql-connector-java-8.0.18" level="project" />
     <orderEntry type="library" name="MigLayout" level="project" />
-    <orderEntry type="library" name="javafx-sdk-11.0" level="application" />
+    <orderEntry type="library" name="mysql-connector-java-8.0.19" level="project" />
   </component>
 </module>

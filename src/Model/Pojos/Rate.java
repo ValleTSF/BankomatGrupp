@@ -12,6 +12,10 @@ public class Rate {
 
     public Rate() {
     }
+    public Rate(double rate, String rateType) {
+        this.rate = rate;
+        this.rateType = rateType;
+    }
 
     public Rate(double rate, String rateType, Timestamp createdOn, Timestamp lastUpdated) {
         this.rate = rate;
@@ -66,5 +70,10 @@ public class Rate {
 
     public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    public String toString() {
+        return rateType + " value: " + rate;
     }
 }

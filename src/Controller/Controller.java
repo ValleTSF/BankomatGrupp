@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Model;
 import Model.Repository.SPSRepository;
+import Pojos.Rate;
 import View.ViewGui;
 import View.ViewGuiAdmin;
 
@@ -69,6 +70,9 @@ public class Controller {
     public String[] getArrayListUserEmail() throws SQLException {
         return spsRepository.userEmaillistToArray();
     }
+    public Rate[] getDropDownRate() throws SQLException {
+        return model.ratelistToArray();
+    }
 
     public int getAccountIdWhereEmail(String email) throws SQLException {
         return spsRepository.getAccountIDWhereUserEmail(email);
@@ -76,6 +80,12 @@ public class Controller {
 
     public int getAccountIdWhereBalanceAccount(String accountName, String email) throws SQLException {
         return spsRepository.getAccountIDWhereBalanceAccount(accountName, email);
+    }
+    public void editLoanRateById(int accountID, int loanRate) throws SQLException {
+        model.changeLoanRateByID(accountID, loanRate);
+    }
+    public void editBalanceRateByAccountName(String balanceAccountName, int loanRate) throws SQLException {
+        model.changeBalanceRateByAccountName(balanceAccountName, loanRate);
     }
 
     public List<String> getBalanceHistoryTimePeriod(int account_id, int account_balance_id, String first_date, String second_date) throws SQLException {

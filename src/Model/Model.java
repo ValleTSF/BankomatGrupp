@@ -2,8 +2,9 @@ package Model;
 
 
 import Model.Repository.*;
-import Model.Pojos.Account;
-import Model.Pojos.Account_Balance;
+import Pojos.Account;
+import Pojos.Account_Balance;
+import Pojos.Rate;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,8 +18,6 @@ public class Model {
     public int returnAccountID(String password) throws SQLException {
         return rep.callSpVerifyCredentialsPasswordFromDB(password);
     }
-
-
     public String returnAccountType(String username, String password) throws SQLException {
         String userid =""+rep.callSpVerifyCredentialsFromDB(username,password);
         Map<Integer, Account> accountMap = map.mapAccountFromDb();
@@ -38,20 +37,18 @@ public class Model {
                         .collect(Collectors.toList());
         return userTypeId;
     }
+    public String returnBalance(int accountID, String amountToInsert, int rateID) throws SQLException {
+        return rep.callBalanceChangeFromDB(accountID,amountToInsert,rateID);
 
     public String returnBalance(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
         return rep.callBalanceChangeFromDB(accountID,accountName,amountToInsert,rateID);
     }
-
-
     public double returnLoanBalance(int kundId) throws SQLException {
         return rep.callSpGetLoanFromDB(kundId + "");
     }
-
     public double returnLoanRate(int kundId) throws SQLException {
         return rep.callSpGetLoanRateFromDB(kundId + "");
     }
-
     public double balanceOwed(double loanBalance, int paymentInterval, double interestRate) {
         if (paymentInterval == 0) {
             return loanBalance;
@@ -59,20 +56,26 @@ public class Model {
             return balanceOwed(loanBalance, paymentInterval - 1, interestRate) * (1 + interestRate);
         }
     }
-
     public Double paymentPlanFixedYear(int accountID) throws SQLException {
         return balanceOwed(returnLoanBalance(accountID), 1, (returnLoanRate(accountID) / 100));
     }
-
     public Double paymentPlanChangeYear(int accountID, int paymentInterval) throws SQLException {
         return balanceOwed(returnLoanBalance(accountID), paymentInterval, (returnLoanRate(accountID) / 100));
     }
+    public void changeLoanRateByID(int accountID, int loanRate) throws SQLException {
+        rep.callChangeLoanRateFromDB(accountID, loanRate);
+    }
+    public void changeBalanceRateByAccountName(String balanceAccountName, int loanRate) throws SQLException {
+        rep.callChangeBalanceRateFromDB(balanceAccountName, loanRate);
+    }
 
+    public Rate[] ratelistToArray() throws SQLException {
+        List<Rate> rateList = rep.getRates();
+        return rateList.toArray(new Rate[rateList.size()]);
+    }
 
     public static void main(String[] args) throws SQLException {
         Model model = new Model();
-        System.out.println("Förväntas: [2,5]");
-        System.out.println(model.returnAccountBalance("userName1","12345"));
     }
 
 
