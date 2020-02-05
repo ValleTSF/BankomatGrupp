@@ -35,14 +35,13 @@ public class ViewGui extends JFrame implements ActionListener {
     JTextArea showBalanceAmount;
     JTextArea checkBalanceAmount;
     JTextArea checkBalanceHistory;
-    JScrollPane scrollPane;
     int kundId;
 
     public ViewGui() {
         super("Login Customer");
         cont = new Controller(this);
 
-        //setResizable(false);
+        setResizable(false);
         loginPanel = new JPanel();
         choicePanel = new JPanel();
         checkLoanPanel = new JPanel();
@@ -66,7 +65,7 @@ public class ViewGui extends JFrame implements ActionListener {
         showLoan = new JTextArea();
         showBalanceAmount = new JTextArea();
         checkBalanceAmount = new JTextArea();
-        checkBalanceHistory = new JTextArea("");
+        checkBalanceHistory = new JTextArea();
         showWithdrawal.setEditable(false);
         showLoan.setEditable(false);
         showBalanceAmount.setEditable(false);
@@ -82,7 +81,7 @@ public class ViewGui extends JFrame implements ActionListener {
         login.setBounds(110, 100, 80, 20);
         checkBalanceBack.setBounds(110, 100, 80, 20);
         withdrawalConfirm.setBounds(110, 100, 80, 20);
-        checkBalanceHistory.setBounds(110, 300, 300, 100);
+        checkBalanceHistory.setBounds(110, 100, 80, 20);
         passwordLabel.setBounds(20, 63, 80, 20);
         showWithdrawal.setBounds(20, 63, 80, 20);
         showBalanceAmount.setBounds(20, 63, 80, 20);
@@ -116,21 +115,8 @@ public class ViewGui extends JFrame implements ActionListener {
         checkLoanPanel.add(showLoan, BorderLayout.CENTER);
         checkLoanPanel.add(checkLoanBack, BorderLayout.SOUTH);
 
-        scrollPane = new JScrollPane(checkBalanceHistory);
-        scrollPane.setBounds(10,60,780,100);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-
         checkBalancePanel.add(checkBalanceBack, BorderLayout.NORTH);
         checkBalancePanel.add(checkBalanceAmount, BorderLayout.CENTER);
-        checkBalancePanel.add(scrollPane);
-
-
-
-
-
-
-
 
 
         setVisible(true);
@@ -240,9 +226,16 @@ public class ViewGui extends JFrame implements ActionListener {
             try {
                 checkBalanceAmount.setText("Nuvarande saldo: \n" + cont.getBalanceNameAndAmount(kundId + ""));
 
-                for (String s : cont.getBalanceHistory(kundId+"")){
-                    checkBalanceHistory.append(s +"\n");
+                JTextArea textArea = new JTextArea(10,20);
+                textArea.append("Date and Time           Amount\n");
+                for (String item:cont.getBalanceHistory(kundId+"")) {
+                    textArea.append(item + "\n");
                 }
+                textArea.setEditable(false);
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                JOptionPane.showMessageDialog(null, scrollPane,
+                        cont.getBalanceName(kundId +"").toString(),
+                        JOptionPane.QUESTION_MESSAGE);
 
             } catch (SQLException ex) {
                 ex.printStackTrace();

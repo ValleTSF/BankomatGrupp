@@ -87,13 +87,13 @@ public class Controller {
         return dem.format(model.paymentPlanChangeYear(Integer.parseInt(accountID),paymentPlan));
     }
 
-//    public List<String> getBalanceAmount(String accountID) throws SQLException {
-//        return model.returnBalanceAmount(accountID);
-//    }
-//
-//    public List<String> getBalanceName(String accountID) throws SQLException {
-//        return model.returnBalanceName(accountID);
-//    }
+    public List<String> getBalanceAmount(String accountID) throws SQLException {
+        return model.returnBalanceAmount(accountID);
+    }
+
+    public List<String> getBalanceName(String accountID) throws SQLException {
+        return model.returnBalanceName(accountID);
+    }
 
     public List<String> getBalanceNameAndAmount(String accountID) throws SQLException {
         return model.returnBalanceNameAndAmount(accountID);
