@@ -136,12 +136,12 @@ public class ViewGui extends JFrame implements ActionListener {
             loginpanel.setVisible(false);
         }
         if (e.getSource() == Ok) {
-            try {
-                cont.insertwithdrawal(kundId,"-"+ txtAmount.getText(), 1);
-                showResult.append("-"+txtAmount.getText()+"\n");
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+//            try {
+//               cont.insertwithdrawal(kundId,"-"+ txtAmount.getText(), 1);
+//                showResult.append("-"+txtAmount.getText()+"\n");
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//            }
 
         }
         if(e.getSource() == checkLoan){

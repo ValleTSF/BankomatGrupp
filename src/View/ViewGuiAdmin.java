@@ -1,6 +1,7 @@
 package View;
 
 import Controller.*;
+import Pojos.Account;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +35,10 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     String customerFirstName;
     String customerLastName;
     String customerEmail;
+    String accountChoice;
+    String[] accountArray;
+
+    List<String> accountList;
 
     public ViewGuiAdmin() {
         super("Login Admin");
@@ -139,6 +144,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     public void initiateAdminUtility(String comboBoxChoice) throws SQLException {
 
         switch (comboBoxChoice) {
+
             case "Add Customer":
                 customerFirstName = JOptionPane.showInputDialog(null, "Input Customer's First Name");
                 customerLastName = JOptionPane.showInputDialog(null, "Input Customer's Last Name");
@@ -147,6 +153,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Sucess!");
                 else JOptionPane.showMessageDialog(null, "ERROR!");
                 break;
+
             case "Delete Customer":
                 userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input User ID"));
                 if (cont.deleteUser(userID))
@@ -155,8 +162,14 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 break;
 
             case "Update Customer Information":
-                System.out.println(comboBoxChoice);
+                userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input User ID"));
+                customerFirstName = JOptionPane.showInputDialog(null, "Input Customer's First Name");
+                customerLastName = JOptionPane.showInputDialog(null, "Input Customer's Last Name");
+                customerEmail = JOptionPane.showInputDialog(null, "Input Customer's Email");
+                cont.updateUser(userID,customerFirstName,customerLastName,customerEmail);
+                JOptionPane.showMessageDialog(null,"Success!");
                 break;
+
             case "Create Customer Account":
                 userID = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
                 stringUsername = JOptionPane.showInputDialog("Input username");
@@ -168,6 +181,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
 
                 System.out.println(comboBoxChoice);
                 break;
+
             case "Delete Customer Account":
                 userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input user ID"));
                 if (cont.deleteUserAccount(userID))
@@ -175,36 +189,71 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 else
                     JOptionPane.showMessageDialog(null, "ERROR");
                 break;
+
             case "Insert Money to Customer":
-                System.out.println(comboBoxChoice);
+                userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input user ID"));
+                amount = JOptionPane.showInputDialog(null, "Input amount to deposit");
+                customerPin = JOptionPane.showInputDialog(null, "Input Customer PIN");
+                customerAccountID = cont.getAccountByString(customerPin);
+                accountList = cont.getBalanceAccountsForWhereUserId(customerAccountID);
+                accountArray = cont.listToStringArray(accountList);
+
+                accountChoice = (String) JOptionPane.showInputDialog(null, "Choose account",
+                        "Choose account", JOptionPane.QUESTION_MESSAGE, null,
+                        accountArray,
+                        accountArray[1]);
+                if (cont.insertwithdrawal(customerAccountID, accountChoice, amount, 1).equalsIgnoreCase(
+                        "Result set representing update count of 0")) {
+                    JOptionPane.showMessageDialog(null, "Success!");
+                } else
+                    JOptionPane.showMessageDialog(null, "ERROR!");
                 break;
+
             case "Withdraw Money from Customer":
                 userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input user ID"));
                 amount = JOptionPane.showInputDialog(null, "Input amount to withdraw");
                 customerPin = JOptionPane.showInputDialog(null, "Input Customer PIN");
                 customerAccountID = cont.getAccountByString(customerPin);
-                System.out.println(cont.insertwithdrawal(customerAccountID, amount, 1));
+                accountList = cont.getBalanceAccountsForWhereUserId(customerAccountID);
+                accountArray = cont.listToStringArray(accountList);
+
+                accountChoice = (String) JOptionPane.showInputDialog(null, "Choose account",
+                        "Choose account", JOptionPane.QUESTION_MESSAGE, null,
+                        accountArray,
+                        accountArray[1]);
+
+                if (cont.insertwithdrawal(customerAccountID, accountChoice, "-" + amount, 1).equalsIgnoreCase(
+                        "Result set representing update count of 0")) {
+                    JOptionPane.showMessageDialog(null, "Success!");
+                } else
+                    JOptionPane.showMessageDialog(null, "ERROR!");
                 break;
+
             case "Approve loan":
                 System.out.println(comboBoxChoice);
                 break;
+
             case "Edit Rate for Account":
                 System.out.println(comboBoxChoice);
                 break;
+
             case "Edit Rate for Loan":
                 System.out.println(comboBoxChoice);
                 break;
+
             case "Show Payment Plan":
                 int userIDPaymentPlan = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
-                JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(userIDPaymentPlan + ""),"Payment Plan",3);
+                JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(userIDPaymentPlan + ""), "Payment Plan", 3);
                 System.out.println(comboBoxChoice);
                 break;
+
             case "Edit Payment Plan":
                 int userIDPaymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
                 int paymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input amount of years"));
-                JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(userIDPaymentPlanEdit + "",paymentPlanEdit),"Payment Plan",3);
+                JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(userIDPaymentPlanEdit + "", paymentPlanEdit), "Payment Plan", 3);
                 System.out.println(comboBoxChoice);
                 break;
+
             case "Show Account History":
                 JComboBox emailList = new JComboBox(cont.getDropDownEmail());
                 JOptionPane.showMessageDialog(null, emailList, "Title",
@@ -239,7 +288,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 int account = cont.getAccountIdWhereBalanceAccount(pickedAccountString, email);
                 String one = xField.getText();
                 String two = yField.getText();
-                List<String> history = cont.getBalanceHistoryForMonth(account,"2020-02-05","2020-02-06");
+                List<String> history = cont.getBalanceHistoryForMonth(account, "2020-02-05", "2020-02-06");
 
                 JTextArea textArea = new JTextArea();
                 textArea.setColumns(30);
@@ -248,7 +297,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 textArea.setWrapStyleWord(true);
                 textArea.setSize(textArea.getPreferredSize().width, textArea.getPreferredSize().height);
                 JOptionPane.showConfirmDialog(new JScrollPane(textArea), JOptionPane.OK_OPTION);
-                history.forEach((text)-> textArea.append(text));
+                history.forEach((text) -> textArea.append(text));
                 break;
             default:
                 System.out.println("Default outcome");

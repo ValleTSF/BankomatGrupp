@@ -39,8 +39,8 @@ public class Model {
         return userTypeId;
     }
 
-    public String returnBalance(int accountID, String amountToInsert, int rateID) throws SQLException {
-        return rep.callBalanceChangeFromDB(accountID,amountToInsert,rateID);
+    public String returnBalance(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
+        return rep.callBalanceChangeFromDB(accountID,accountName,amountToInsert,rateID);
     }
 
 

@@ -61,25 +61,29 @@ public class SPSRepository {
 
     }
 
-    public void callUpdateUserFromDB(int user_id, String user_first_name, String user_last_name, String user_mail) throws SQLException {
+    public String callUpdateUserFromDB(int user_id, String user_first_name, String user_last_name, String user_mail) throws SQLException {
 
-        String sqlQuery = "call create_User(?,?,?)";
+        String sqlQuery = "call update_User(?,?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
             ResultSet rs;
-            pstmt.setInt(1,user_id);
+            pstmt.setInt(1, user_id);
             pstmt.setString(2, user_first_name);
             pstmt.setString(3, user_last_name);
             pstmt.setString(4, user_mail);
-            rs = pstmt.executeQuery();
+            pstmt.execute();
+            int r = pstmt.getUpdateCount();
+            System.out.println(pstmt.getUpdateCount());
+            System.out.println(r);
 
-            System.out.println(rs);
+            return ""+r;
 
         }
 
     }
+
 
     // Account Methods
 
@@ -168,20 +172,21 @@ public class SPSRepository {
 
     // Currency methods
 
-    public String callBalanceChangeFromDB(int accountID, String amountToInsert, int rateID) throws SQLException {
+    public String callBalanceChangeFromDB(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
 
-        String sqlQuery = "call balanceChange(?,?,?)";
+        String sqlQuery = "call balanceChange(?,?,?,?)";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
             ResultSet rs;
             pstmt.setInt(1, accountID);
-            pstmt.setInt(2, Integer.parseInt(amountToInsert));
-            pstmt.setInt(3,rateID);
+            pstmt.setString(2, accountName);
+            pstmt.setInt(3, Integer.parseInt(amountToInsert));
+            pstmt.setInt(4, rateID);
             rs = pstmt.executeQuery();
 
-            return rs+"";
+            return rs + "";
 
         }
 
@@ -204,23 +209,23 @@ public class SPSRepository {
         }
     }
 
-        public int callSpGetLoanFromDB(String account_id) throws SQLException {
+    public int callSpGetLoanFromDB(String account_id) throws SQLException {
 
-            String sqlQuery = "call sp_get_loan_amount_by_account_id(?,?)";
-            try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                    pro.getProperty("login"),
-                    pro.getProperty("password"));
-                 CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+        String sqlQuery = "call sp_get_loan_amount_by_account_id(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
 
-                pstmt.setString(1, account_id);
-                pstmt.registerOutParameter(2, Types.INTEGER);
-                pstmt.execute();
+            pstmt.setString(1, account_id);
+            pstmt.registerOutParameter(2, Types.INTEGER);
+            pstmt.execute();
 
-                return pstmt.getInt(2);
-
-            }
+            return pstmt.getInt(2);
 
         }
+
+    }
 
     // Currency methods
 
@@ -240,7 +245,7 @@ public class SPSRepository {
             ResultSet rss;
             rss = stmt.executeQuery();
 
-            while (rss.next()){
+            while (rss.next()) {
                 his.add(rss.getString("balance"));
             }
         }
@@ -261,12 +266,12 @@ public class SPSRepository {
                 pro.getProperty("password"));
              PreparedStatement stmt = con.prepareCall(sqlQuery)) {
             stmt.setInt(1, account_id);
-            stmt.setString(2,first_date);
+            stmt.setString(2, first_date);
             stmt.setString(3, second_date);
             ResultSet rss;
             rss = stmt.executeQuery();
 
-            while (rss.next()){
+            while (rss.next()) {
                 his.add(rss.getString("balance"));
             }
         }
@@ -287,12 +292,12 @@ public class SPSRepository {
                 pro.getProperty("password"));
              PreparedStatement stmt = con.prepareCall(sqlQuery)) {
             stmt.setInt(1, account_id);
-            stmt.setString(2,first_date);
+            stmt.setString(2, first_date);
             stmt.setString(3, second_date);
             ResultSet rss;
             rss = stmt.executeQuery();
 
-            while (rss.next()){
+            while (rss.next()) {
                 his.add(rss.getString("balance"));
             }
         }
@@ -311,7 +316,7 @@ public class SPSRepository {
             ResultSet rss;
             rss = stmt.executeQuery();
 
-            while (rss.next()){
+            while (rss.next()) {
                 accountList.add(rss.getString("balance_account_name"));
             }
         }
@@ -332,7 +337,8 @@ public class SPSRepository {
         List<String> emailList = getAllusersEmailFromDb();
         return emailList.toArray(new String[emailList.size()]);
     }
-    public List<String> getAllusersEmailFromDb() throws SQLException  {
+
+    public List<String> getAllusersEmailFromDb() throws SQLException {
         List<String> emailList = new ArrayList<>();
         String sqlQuery = "select email from bankomat.user";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
@@ -349,6 +355,7 @@ public class SPSRepository {
         }
         return emailList;
     }
+
     public int getAccountIDWhereUserEmail(String email_adress) throws SQLException {
         String sqlQuery = "select account.id from account " +
                 "inner join user on account.user_id = user.id " +
@@ -382,6 +389,7 @@ public class SPSRepository {
             return rss.getInt("account.id");
         }
     }
+
     public void callChangeBalanceRateFromDB(String balanceAccountName, int rateID) throws SQLException {
 
         String sqlQuery = "call sp_change_balance_rate_by_account_name(?,?)";
@@ -398,6 +406,7 @@ public class SPSRepository {
 
         }
     }
+
     public void callChangeLoanRateFromDB(int accountID, int rateID) throws SQLException {
 
         String sqlQuery = "call sp_change_balance_rate_by_account_name(?,?)";
@@ -434,9 +443,19 @@ public class SPSRepository {
         SPSRepository re = new SPSRepository();
 
         //2020-02-05 och 2020-02-06
-        List<String> his = re.getBalanceHistoryBetweenTwoDates(1,"2020-02-05","2020-02-06");
+        List<String> his = re.getBalanceHistoryBetweenTwoDates(1, "2020-02-05", "2020-02-06");
         his.forEach(System.out::println);
-        re.callCreateUserAccountFromDB(1,"SwagMAnJones", 9999);
+        re.callCreateUserAccountFromDB(1, "SwagMAnJones", 9999);
+    }
+
+    public String[] listToStringArray(List<String> list) {
+        String[] array = new String[list.size()];
+        int i = 0;
+        for (String account : list) {
+            array[i] = account;
+            i++;
+        }
+        return array;
     }
 
 }
