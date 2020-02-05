@@ -14,7 +14,7 @@ public class MapRepository {
 
     public MapRepository() {
         try {
-            pro.load(new FileInputStream("src/SQL-Info"));
+            pro.load(new FileInputStream("src/SQL/SQL-Info"));
         } catch (Exception e) {
             e.printStackTrace();
         }

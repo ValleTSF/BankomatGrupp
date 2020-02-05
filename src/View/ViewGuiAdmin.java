@@ -38,6 +38,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     String accountChoice;
     String[] accountArray;
 
+    JPanel myPanel = new JPanel();
+
     List<String> accountList;
 
     public ViewGuiAdmin() {
@@ -264,7 +266,6 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
 
             case "Show Account History":
 
-                Controller cont = new Controller();
                 JComboBox emailList = new JComboBox(cont.getArrayListUserEmail());
                 JOptionPane.showMessageDialog(null, emailList, "Title",
                         JOptionPane.QUESTION_MESSAGE);
@@ -287,7 +288,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 JTextField xField = new JTextField(10);
                 JTextField yField = new JTextField(10);
 
-                JPanel myPanel = new JPanel();
+
                 myPanel.add(new JLabel("Date from:"));
                 myPanel.add(xField);
                 myPanel.add(Box.createHorizontalStrut(15)); // a spacer

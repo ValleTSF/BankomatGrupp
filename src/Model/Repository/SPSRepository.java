@@ -12,7 +12,7 @@ public class SPSRepository {
 
     public SPSRepository() {
         try {
-            pro.load(new FileInputStream("src\\SQL-Info"));
+            pro.load(new FileInputStream("src/SQL/SQL-Info"));
         } catch (Exception e) {
             e.printStackTrace();
         }
