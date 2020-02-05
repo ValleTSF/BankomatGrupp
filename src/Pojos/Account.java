@@ -67,4 +67,15 @@ public class Account {
     public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", user_id=" + user_id +
+                ", account_type_id=" + account_type_id +
+                ", createdOn=" + createdOn +
+                ", lastUpdated=" + lastUpdated +
+                '}';
+    }
 }

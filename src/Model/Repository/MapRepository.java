@@ -14,7 +14,7 @@ public class MapRepository {
 
     public MapRepository() {
         try {
-            pro.load(new FileInputStream("src\\SQL-Info"));
+            pro.load(new FileInputStream("src/SQL-Info"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,10 +32,10 @@ public class MapRepository {
             while (rs.next()) {
                 userHashMap.put(rs.getInt("id"),
                         new User(rs.getString("first_name"),
-                                 rs.getString("last_name"),
-                                 rs.getString("email"),
-                                 rs.getTimestamp("createdOn"),
-                                 rs.getTimestamp("lastUpdated")));
+                                rs.getString("last_name"),
+                                rs.getString("email"),
+                                rs.getTimestamp("createdOn"),
+                                rs.getTimestamp("lastUpdated")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,7 +50,7 @@ public class MapRepository {
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              Statement stmt = con.createStatement()) {
-             ResultSet rs = stmt.executeQuery(sqlQuery);
+            ResultSet rs = stmt.executeQuery(sqlQuery);
 
             while (rs.next()) {
                 rateHashMap.put(rs.getInt("id"),
@@ -68,7 +68,7 @@ public class MapRepository {
 
     public Map<Integer, Account_Type> mapAccountTypeFromDb() {
         Map<Integer, Account_Type> accountTypeHashMap = new HashMap<>();
-        String sqlQuery = "select * from bankomat.rate";
+        String sqlQuery = "select * from bankomat.account_type";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
@@ -117,12 +117,12 @@ public class MapRepository {
         Map<Integer, Account_Loan> accountLoanHashMap = new HashMap<>();
         Map<Integer, Account> accountHashMap = mapAccountFromDb();
         Map<Integer, Rate> rateHashMap = mapRateFromDb();
-        String sqlQuery = "select * from bankomat.account";
+        String sqlQuery = "select * from bankomat.account_loan";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              Statement stmt = con.createStatement()) {
-             ResultSet rs = stmt.executeQuery(sqlQuery);
+            ResultSet rs = stmt.executeQuery(sqlQuery);
 
             while (rs.next()) {
                 accountLoanHashMap.put(rs.getInt("id"),
@@ -191,12 +191,12 @@ public class MapRepository {
         return credentialsHashMap;
     }
 
-    public Map<Integer, Transactions> mapTransactionsLoanFromDb() {
+    public Map<Integer, Transactions> mapTransactionsFromDb() {
         Map<Integer, Transactions> transactionsHashMap = new HashMap<>();
         Map<Integer, Account> accountHashMap = mapAccountFromDb();
         Map<Integer, Account_Loan> account_loanMap = mapAccountLoanFromDb();
         Map<Integer, Account_Balance> account_BalanceMap = mapAccountBalanceLoanFromDb();
-        String sqlQuery = "select * from bankomat.account";
+        String sqlQuery = "select * from bankomat.transactions";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
@@ -223,7 +223,10 @@ public class MapRepository {
     public static void main(String[] args) throws SQLException {
         MapRepository r = new MapRepository();
 
+        Map<Integer, Transactions> transactionsMap = r.mapTransactionsFromDb();
+
     }
 
-
 }
+
+
