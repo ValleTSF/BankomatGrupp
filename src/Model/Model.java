@@ -38,8 +38,29 @@ public class Model {
         return rep.callBalanceChangeFromDB(accountID,amountToInsert,rateID);
     }
 
-    public int returnLoanBalanc(int kundId) throws SQLException {
-        return rep.callSpGetLoanFromDB(kundId+"");
+
+    public double returnLoanBalance(int kundId) throws SQLException {
+        return rep.callSpGetLoanFromDB(kundId + "");
+    }
+
+    public double returnLoanRate(int kundId) throws SQLException {
+        return rep.callSpGetLoanRateFromDB(kundId + "");
+    }
+
+    public double balanceOwed(double loanBalance, int paymentInterval, double interestRate) {
+        if (paymentInterval == 0) {
+            return loanBalance;
+        } else {
+            return balanceOwed(loanBalance, paymentInterval - 1, interestRate) * (1 + interestRate);
+        }
+    }
+
+    public Double paymentPlanFixedYear(int accountID) throws SQLException {
+        return balanceOwed(returnLoanBalance(accountID), 1, (returnLoanRate(accountID) / 100));
+    }
+
+    public Double paymentPlanChangeYear(int accountID, int paymentInterval) throws SQLException {
+        return balanceOwed(returnLoanBalance(accountID), paymentInterval, (returnLoanRate(accountID) / 100));
     }
 
     public List<String> returnHistoryBalance(int account_id) throws SQLException {

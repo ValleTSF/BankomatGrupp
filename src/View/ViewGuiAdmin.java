@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ViewGuiAdmin extends JFrame implements ActionListener {
     Controller cont;
@@ -15,7 +16,6 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     JButton initiate;
     JButton cancel;
     JPanel adminUtilitiesPanel;
-    JPanel createUserAccountPanel;
     JPanel loginpanel;
     JTextField txuser;
     JTextField pass;
@@ -24,6 +24,16 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     JComboBox adminUtitiliesPanelComboBox;
     String[] adminComboBoxOptions;
     String comboBoxChoice;
+
+    int userID;
+    String stringUsername;
+    int stringPassword;
+    String amount;
+    String customerPin;
+    int customerAccountID;
+    String customerFirstName;
+    String customerLastName;
+    String customerEmail;
 
     public ViewGuiAdmin() {
         super("Login Admin");
@@ -130,19 +140,28 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
 
         switch (comboBoxChoice) {
             case "Add Customer":
-                System.out.println(comboBoxChoice);
+                customerFirstName = JOptionPane.showInputDialog(null, "Input Customer's First Name");
+                customerLastName = JOptionPane.showInputDialog(null, "Input Customer's Last Name");
+                customerEmail = JOptionPane.showInputDialog(null, "Input Customer's Email");
+                if (cont.createUser(customerFirstName, customerLastName, customerEmail))
+                    JOptionPane.showMessageDialog(null, "Sucess!");
+                else JOptionPane.showMessageDialog(null, "ERROR!");
                 break;
             case "Delete Customer":
-                System.out.println(comboBoxChoice);
+                userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input User ID"));
+                if (cont.deleteUser(userID))
+                    JOptionPane.showMessageDialog(null, "Sucess!");
+                else JOptionPane.showMessageDialog(null, "ERROR!");
                 break;
+
             case "Update Customer Information":
                 System.out.println(comboBoxChoice);
                 break;
             case "Create Customer Account":
-                int userID = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
-                String username = JOptionPane.showInputDialog("Input username");
-                int password = Integer.parseInt(JOptionPane.showInputDialog("Input password (4 digits)"));
-                if (cont.createUserAccount(userID, username, password))
+                userID = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
+                stringUsername = JOptionPane.showInputDialog("Input username");
+                stringPassword = Integer.parseInt(JOptionPane.showInputDialog("Input password (4 digits)"));
+                if (cont.createUserAccount(userID, stringUsername, stringPassword))
                     JOptionPane.showMessageDialog(null, "success");
                 else
                     JOptionPane.showMessageDialog(null, "ERROR");
@@ -150,13 +169,21 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 System.out.println(comboBoxChoice);
                 break;
             case "Delete Customer Account":
-                System.out.println(comboBoxChoice);
+                userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input user ID"));
+                if (cont.deleteUserAccount(userID))
+                    JOptionPane.showMessageDialog(null, "success");
+                else
+                    JOptionPane.showMessageDialog(null, "ERROR");
                 break;
             case "Insert Money to Customer":
                 System.out.println(comboBoxChoice);
                 break;
             case "Withdraw Money from Customer":
-                System.out.println(comboBoxChoice);
+                userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input user ID"));
+                amount = JOptionPane.showInputDialog(null, "Input amount to withdraw");
+                customerPin = JOptionPane.showInputDialog(null, "Input Customer PIN");
+                customerAccountID = cont.getAccountByString(customerPin);
+                System.out.println(cont.insertwithdrawal(customerAccountID, amount, 1));
                 break;
             case "Approve loan":
                 System.out.println(comboBoxChoice);
@@ -168,13 +195,60 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 System.out.println(comboBoxChoice);
                 break;
             case "Show Payment Plan":
+                int userIDPaymentPlan = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
+                JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(userIDPaymentPlan + ""),"Payment Plan",3);
                 System.out.println(comboBoxChoice);
                 break;
             case "Edit Payment Plan":
+                int userIDPaymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input user ID"));
+                int paymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input amount of years"));
+                JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(userIDPaymentPlanEdit + "",paymentPlanEdit),"Payment Plan",3);
                 System.out.println(comboBoxChoice);
                 break;
             case "Show Account History":
-                System.out.println(comboBoxChoice);
+                JComboBox emailList = new JComboBox(cont.getDropDownEmail());
+                JOptionPane.showMessageDialog(null, emailList, "Title",
+                        JOptionPane.QUESTION_MESSAGE);
+
+                int get = emailList.getSelectedIndex();
+                String[] pickedEmail = cont.getDropDownEmail();
+                String email = pickedEmail[get];
+                JComboBox kontoList = new JComboBox(cont.getDropDownAccounts(cont.getAccountIdWhereEmail(email)));
+
+                JOptionPane.showMessageDialog(null, kontoList, "Title",
+                        JOptionPane.QUESTION_MESSAGE);
+
+                int get2 = kontoList.getSelectedIndex();
+                String[] accountStringArray = cont.getDropDownEmail();
+                String pickedAccountString = accountStringArray[get2];
+
+                JTextField xField = new JTextField(10);
+                JTextField yField = new JTextField(10);
+
+                JPanel myPanel = new JPanel();
+                myPanel.add(new JLabel("Date from:"));
+                myPanel.add(xField);
+                myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+                myPanel.add(new JLabel("Date to:"));
+                myPanel.add(yField);
+
+                JOptionPane.showConfirmDialog(null, myPanel,
+                        "Please enter two dates", JOptionPane.OK_CANCEL_OPTION);
+
+
+                int account = cont.getAccountIdWhereBalanceAccount(pickedAccountString, email);
+                String one = xField.getText();
+                String two = yField.getText();
+                List<String> history = cont.getBalanceHistoryForMonth(account,"2020-02-05","2020-02-06");
+
+                JTextArea textArea = new JTextArea();
+                textArea.setColumns(30);
+                textArea.setRows(10);
+                textArea.setLineWrap(true);
+                textArea.setWrapStyleWord(true);
+                textArea.setSize(textArea.getPreferredSize().width, textArea.getPreferredSize().height);
+                JOptionPane.showConfirmDialog(new JScrollPane(textArea), JOptionPane.OK_OPTION);
+                history.forEach((text)-> textArea.append(text));
                 break;
             default:
                 System.out.println("Default outcome");
