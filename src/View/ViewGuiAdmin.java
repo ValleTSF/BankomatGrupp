@@ -266,21 +266,26 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 break;
 
             case "Show Account History":
-                JComboBox emailList = new JComboBox(cont.getDropDownEmail());
+
+                Controller cont = new Controller();
+                JComboBox emailList = new JComboBox(cont.getArrayListUserEmail());
                 JOptionPane.showMessageDialog(null, emailList, "Title",
                         JOptionPane.QUESTION_MESSAGE);
 
                 int get = emailList.getSelectedIndex();
-                String[] pickedEmail = cont.getDropDownEmail();
+                String[] pickedEmail = cont.getArrayListUserEmail();
                 String email = pickedEmail[get];
-                JComboBox kontoList = new JComboBox(cont.getDropDownAccounts(cont.getAccountIdWhereEmail(email)));
-
+                JComboBox kontoList = new JComboBox(cont.getDropDownBalanceAccounts(cont.getAccountIdWhereEmail(email)));
                 JOptionPane.showMessageDialog(null, kontoList, "Title",
                         JOptionPane.QUESTION_MESSAGE);
 
+                int AccountId = cont.getAccountIdWhereEmail(email);
+
                 int get2 = kontoList.getSelectedIndex();
-                String[] accountStringArray = cont.getDropDownEmail();
-                String pickedAccountString = accountStringArray[get2];
+                String[] accountStringArray = cont.getDropDownBalanceAccounts(AccountId);
+                String pickedBalanceAccountString = accountStringArray[get2];
+                int account_balance_id = cont.getBalanceIdByName(pickedBalanceAccountString);
+
 
                 JTextField xField = new JTextField(10);
                 JTextField yField = new JTextField(10);
@@ -293,22 +298,23 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 myPanel.add(yField);
 
                 JOptionPane.showConfirmDialog(null, myPanel,
-                        "Please enter two dates", JOptionPane.OK_CANCEL_OPTION);
+                        "Please enter two dates in the format YYYY-MM-DD", JOptionPane.OK_CANCEL_OPTION);
 
-
-                int account = cont.getAccountIdWhereBalanceAccount(pickedAccountString, email);
                 String one = xField.getText();
                 String two = yField.getText();
-                List<String> history = cont.getBalanceHistoryForMonth(account, "2020-02-05", "2020-02-06");
 
-                JTextArea textArea = new JTextArea();
-                textArea.setColumns(30);
-                textArea.setRows(10);
-                textArea.setLineWrap(true);
-                textArea.setWrapStyleWord(true);
-                textArea.setSize(textArea.getPreferredSize().width, textArea.getPreferredSize().height);
-                JOptionPane.showConfirmDialog(new JScrollPane(textArea), JOptionPane.OK_OPTION);
-                history.forEach((text) -> textArea.append(text));
+                List<String> history = cont.getBalanceHistoryTimePeriod(AccountId,account_balance_id,one,two);
+
+                JTextArea textArea = new JTextArea(10,20);
+                textArea.append("      Date and Time                  Amount\n");
+                for (String item:history) {
+                    textArea.append(item + "\n");
+                }
+                textArea.setEditable(false);
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                JOptionPane.showMessageDialog(null, scrollPane, "[ " + one + " ] to [ " + two + " ]",
+                        JOptionPane.QUESTION_MESSAGE);
+
                 break;
             default:
                 System.out.println("Default outcome");

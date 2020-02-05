@@ -17,6 +17,9 @@ public class Controller {
     private Model model = new Model();
     private SPSRepository spsRepository = new SPSRepository();
 
+    public Controller() {
+    }
+
     public Controller(ViewGui view) {
         this.view = view;
     }
@@ -59,12 +62,12 @@ public class Controller {
         return spsRepository.callDeleteUserFromDB(userID);
     }
 
-    public String[] getDropDownAccounts(int account_id) throws SQLException {
+    public String[] getDropDownBalanceAccounts(int account_id) throws SQLException {
         return spsRepository.balanceAccountlistToArray(account_id);
     }
 
-    public String[] getDropDownEmail() throws SQLException {
-        return spsRepository.emaillistToArray();
+    public String[] getArrayListUserEmail() throws SQLException {
+        return spsRepository.userEmaillistToArray();
     }
 
     public int getAccountIdWhereEmail(String email) throws SQLException {
@@ -75,8 +78,8 @@ public class Controller {
         return spsRepository.getAccountIDWhereBalanceAccount(accountName, email);
     }
 
-    public List<String> getBalanceHistoryForMonth(int account_id, String first_date, String second_date) {
-        return getBalanceHistoryForMonth(account_id, first_date, second_date);
+    public List<String> getBalanceHistoryTimePeriod(int account_id, int account_balance_id, String first_date, String second_date) throws SQLException {
+        return spsRepository.getBalanceHistoryBetweenTwoDates(account_id, account_balance_id, first_date, second_date);
     }
     public String showPaymentPlanByAccountId(String accountID) throws SQLException {
         DecimalFormat dem = new DecimalFormat("#.##");
@@ -85,6 +88,14 @@ public class Controller {
     public String editPaymentPlanByAccountId(String accountID,int paymentPlan) throws SQLException {
         DecimalFormat dem = new DecimalFormat("#.##");
         return dem.format(model.paymentPlanChangeYear(Integer.parseInt(accountID),paymentPlan));
+    }
+
+    public int getBalanceIdByName(String balance_Account_Name) throws SQLException {
+        return spsRepository.getBalanceAccountIdByName(balance_Account_Name);
+    }
+
+    public String getBalanceNameById(int balance_Account_Id) throws SQLException {
+        return spsRepository.getBalanceAccountNameById(balance_Account_Id);
     }
     public List<String>getBalanceAccountsForWhereUserId (int accountID) throws SQLException {
         return spsRepository.getBalanceAccountsForWhereUserId(accountID);

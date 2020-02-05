@@ -253,29 +253,34 @@ public class SPSRepository {
     }
 
     // formatet på datum måste vara åååå-mm-dd, testa mellan 2020-02-05 och 2020-02-06
-    public List<String> getBalanceHistoryBetweenTwoDates(int account_id, String first_date, String second_date) throws SQLException {
-        List<String> his = new ArrayList<>();
-        String sqlQuery = "select concat(transactions.createdOn,' ', transactions.amount) as balance " +
-                "                from transactions " +
-                "                inner join account on transactions.account_id = account.id" +
-                "                where account.id = ? and account_loan_id is null" +
-                "                and date(transactions.createdOn) >= ?" +
-                "                AND date(transactions.createdOn) <= ?";
+    public List<String> getBalanceHistoryBetweenTwoDates(int account_id, int account_balance_id, String first_date, String second_date) throws SQLException {
+        List<String> balanceHistoryList = new ArrayList<>();
+        String sqlQuery = "select concat(transactions.createdOn, '              ', transactions.amount) as balance " +
+                "from transactions " +
+                "         inner join account on transactions.account_id = account.id" +
+                "         inner join account_balance on account.id = account_balance.account_id" +
+                " " +
+                "  where account.id = ?" +
+                "  and account_loan_id is null" +
+                "  and account_balance_id = ? " +
+                "  and date(transactions.createdOn) >= ?" +
+                "  and date(transactions.createdOn) <= ?";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
              PreparedStatement stmt = con.prepareCall(sqlQuery)) {
             stmt.setInt(1, account_id);
-            stmt.setString(2, first_date);
-            stmt.setString(3, second_date);
+            stmt.setInt(2, account_balance_id);
+            stmt.setString(3, first_date);
+            stmt.setString(4, second_date);
             ResultSet rss;
             rss = stmt.executeQuery();
 
-            while (rss.next()) {
-                his.add(rss.getString("balance"));
+            while (rss.next()){
+                balanceHistoryList.add(rss.getString("balance"));
             }
         }
-        return his;
+        return balanceHistoryList;
     }
 
     // formatet på datum måste vara åååå-mm-dd, testa mellan 2020-02-05 och 2020-02-06
@@ -333,14 +338,16 @@ public class SPSRepository {
         return accountList.toArray(new String[getBalanceAccountsForWhereUserId(account_id).size()]);
     }
 
-    public String[] emaillistToArray() throws SQLException {
-        List<String> emailList = getAllusersEmailFromDb();
+    public String[] userEmaillistToArray() throws SQLException {
+        List<String> emailList = getAllUsersEmailFromDb();
         return emailList.toArray(new String[emailList.size()]);
     }
-
-    public List<String> getAllusersEmailFromDb() throws SQLException {
+    public List<String> getAllUsersEmailFromDb() throws SQLException  {
         List<String> emailList = new ArrayList<>();
-        String sqlQuery = "select email from bankomat.user";
+        String sqlQuery = "select email from bankomat.user " +
+                "inner join account on user.id = account.user_id " +
+                "inner join account_type on account.account_type_id = account_type.id " +
+                "where account_type = 'USER'";
         try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
                 pro.getProperty("login"),
                 pro.getProperty("password"));
@@ -355,6 +362,42 @@ public class SPSRepository {
         }
         return emailList;
     }
+    public int getBalanceAccountIdByName(String accountName) throws SQLException {
+        String sqlQuery = "select account_balance.id from account_balance " +
+                "where balance_account_name = ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setString(1, accountName);
+            ResultSet rss = stmt.executeQuery();
+            int returnNumber = 0;
+            if(rss.next()){
+                returnNumber = rss.getInt("account_balance.id");
+            }
+
+             return returnNumber;
+        }
+    }
+
+    public String getBalanceAccountNameById(int balance_account_id) throws SQLException {
+        String sqlQuery = "select balance_account_name from account_balance " +
+                "where account_balance.id = ?";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             PreparedStatement stmt = con.prepareCall(sqlQuery)) {
+            stmt.setInt(1, balance_account_id);
+            ResultSet rss = stmt.executeQuery();
+            String returnString = null;
+            if(rss.next()){
+                returnString = rss.getString("balance_account_name");
+            }
+            return returnString;
+        }
+    }
+
+
 
     public int getAccountIDWhereUserEmail(String email_adress) throws SQLException {
         String sqlQuery = "select account.id from account " +
@@ -366,8 +409,11 @@ public class SPSRepository {
              PreparedStatement stmt = con.prepareCall(sqlQuery)) {
             stmt.setString(1, email_adress);
             ResultSet rss = stmt.executeQuery();
-            rss.next();
-            return rss.getInt("account.id");
+            int returnValue = 0;
+            if(rss.next()){
+                returnValue = rss.getInt("account.id");
+            }
+            return returnValue;
         }
     }
 
@@ -385,8 +431,13 @@ public class SPSRepository {
             stmt.setString(2, email);
             ResultSet rss = stmt.executeQuery();
             rss.next();
+            int returnInt = 0;
 
-            return rss.getInt("account.id");
+            if(rss.next()){
+                returnInt = rss.getInt("account.id");
+            }
+
+            return returnInt;
         }
     }
 
@@ -443,9 +494,11 @@ public class SPSRepository {
         SPSRepository re = new SPSRepository();
 
         //2020-02-05 och 2020-02-06
-        List<String> his = re.getBalanceHistoryBetweenTwoDates(1, "2020-02-05", "2020-02-06");
-        his.forEach(System.out::println);
-        re.callCreateUserAccountFromDB(1, "SwagMAnJones", 9999);
+//        List<String> his = re.getBalanceHistoryBetweenTwoDates(1, 19 ,"2020-02-05","2020-02-06");
+//        his.forEach(System.out::println);
+//        re.callCreateUserAccountFromDB(1,"SwagMAnJones", 9999);
+        System.out.println( re.getBalanceAccountIdByName("Balance_konto1"));
+
     }
 
     public String[] listToStringArray(List<String> list) {
