@@ -39,7 +39,7 @@ public class Controller {
     }
 
 
-    public String insertwithdrawal(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
+    public Boolean insertwithdrawal(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
         return model.returnBalance(accountID, accountName, amountToInsert, rateID);
     }
 
@@ -120,6 +120,10 @@ public class Controller {
 
     public Boolean createLoanForUser(int accountID, int loanAmount, int rateID) throws SQLException {
         return spsRepository.callCreateLoanForUserFromDB(accountID, loanAmount, rateID);
+    }
+
+    public Boolean createUserBalanceAccount (int accountID, String accountName, int rateID) throws SQLException {
+        return spsRepository.callCreateUserBalanceAccount(accountID, accountName, rateID);
     }
 
 

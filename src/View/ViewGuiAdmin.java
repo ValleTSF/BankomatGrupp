@@ -38,6 +38,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
     String customerEmail;
     String accountChoice;
     String[] accountArray;
+    String accountName;
 
     JPanel myPanel = new JPanel();
 
@@ -53,6 +54,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 "Update Customer Information",
                 "Create Customer Account",
                 "Delete Customer Account",
+                "Create User Balance Account",
                 "Insert Money to Customer",
                 "Withdraw Money from Customer",
                 "Approve loan",
@@ -204,9 +206,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 accountChoice = (String) JOptionPane.showInputDialog(null, "Choose account",
                         "Choose account", JOptionPane.QUESTION_MESSAGE, null,
                         accountArray,
-                        accountArray[1]);
-                if (cont.insertwithdrawal(customerAccountID, accountChoice, amount, 1).equalsIgnoreCase(
-                        "Result set representing update count of 0")) {
+                        accountArray[0]);
+                if (cont.insertwithdrawal(customerAccountID, accountChoice, amount, 1)) {
                     JOptionPane.showMessageDialog(null, "Success!");
                 } else
                     JOptionPane.showMessageDialog(null, "ERROR!");
@@ -223,10 +224,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 accountChoice = (String) JOptionPane.showInputDialog(null, "Choose account",
                         "Choose account", JOptionPane.QUESTION_MESSAGE, null,
                         accountArray,
-                        accountArray[1]);
-
-                if (cont.insertwithdrawal(customerAccountID, accountChoice, "-" + amount, 1).equalsIgnoreCase(
-                        "Result set representing update count of 0")) {
+                        accountArray[0]);
+                if (cont.insertwithdrawal(customerAccountID, accountChoice, "-" + amount, 1)) {
                     JOptionPane.showMessageDialog(null, "Success!");
                 } else
                     JOptionPane.showMessageDialog(null, "ERROR!");
@@ -267,9 +266,9 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 int getForEditRateBalance3 = rateListForEditRateBalance.getSelectedIndex();
                 Rate[] pickedRategetForEditRateBalance = cont.getDropDownRate();
                 Rate rategetForEditRateBalance = pickedRategetForEditRateBalance[getForEditRateBalance3];
-                cont.editBalanceRateByAccountName(pickedAccountStringForEditRateBalance2,getForEditRateBalance3+1);
-                JOptionPane.showMessageDialog(null, "Räntan ändrad till: " + rategetForEditRateBalance.getRate() + " på: " + pickedAccountStringForEditRateBalance2,"Payment Plan",3);
-                System.out.println("Kontonamn: " + pickedAccountStringForEditRateBalance2 + "Account id: " + cont.getAccountIdWhereEmail(emailForEditRateBalance)+ " Rate : " + (getForEditRateBalance3+1));
+                cont.editBalanceRateByAccountName(pickedAccountStringForEditRateBalance2, getForEditRateBalance3 + 1);
+                JOptionPane.showMessageDialog(null, "Räntan ändrad till: " + rategetForEditRateBalance.getRate() + " på: " + pickedAccountStringForEditRateBalance2, "Payment Plan", 3);
+                System.out.println("Kontonamn: " + pickedAccountStringForEditRateBalance2 + "Account id: " + cont.getAccountIdWhereEmail(emailForEditRateBalance) + " Rate : " + (getForEditRateBalance3 + 1));
                 break;
 
             case "Edit Rate for Loan":
@@ -284,8 +283,8 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 int getEditRateLoan = rateListForEditRateLoan.getSelectedIndex();
                 Rate[] pickedRategetForEditRateLoan = cont.getDropDownRate();
                 Rate rategetForEditRateLoan = pickedRategetForEditRateLoan[getEditRateLoan];
-                cont.editLoanRateById(cont.getAccountIdWhereEmail(emailgetForEditRateLoan),(getEditRateLoan+1));
-                JOptionPane.showMessageDialog(null, "Räntan ändrades till: " + rategetForEditRateLoan.getRate(),"Payment Plan",3);
+                cont.editLoanRateById(cont.getAccountIdWhereEmail(emailgetForEditRateLoan), (getEditRateLoan + 1));
+                JOptionPane.showMessageDialog(null, "Räntan ändrades till: " + rategetForEditRateLoan.getRate(), "Payment Plan", 3);
                 break;
 
             case "Show Payment Plan":
@@ -294,7 +293,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 int getForPaymentPlan = emailListForPaymentPlan.getSelectedIndex();
                 String[] pickedEmailForPaymentPlan = cont.getArrayListUserEmail();
                 String emailForPaymentPlan = pickedEmailForPaymentPlan[getForPaymentPlan];
-                JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlan)+""),"Payment Plan",3);
+                JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlan) + ""), "Payment Plan", 3);
                 break;
 
             case "Edit Payment Plan":
@@ -304,7 +303,7 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 String[] pickedEmailForPaymentPlanEdit = cont.getArrayListUserEmail();
                 String emailForPaymentPlanEdit = pickedEmailForPaymentPlanEdit[getForPaymentPlanEdit];
                 int paymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input amount of years"));
-                JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlanEdit)+"",paymentPlanEdit),"Payment Plan",3);
+                JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlanEdit) + "", paymentPlanEdit), "Payment Plan", 3);
                 break;
 
             case "Show Account History":
@@ -344,19 +343,31 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 String one = xField.getText();
                 String two = yField.getText();
 
-                List<String> history = cont.getBalanceHistoryTimePeriod(AccountId,account_balance_id,one,two);
+                List<String> history = cont.getBalanceHistoryTimePeriod(AccountId, account_balance_id, one, two);
 
-                JTextArea textArea = new JTextArea(10,20);
+                JTextArea textArea = new JTextArea(10, 20);
                 textArea.append("      Date and Time                  Amount\n");
-                for (String item:history) {
+                for (String item : history) {
                     textArea.append(item + "\n");
                 }
                 textArea.setEditable(false);
                 JScrollPane scrollPane = new JScrollPane(textArea);
                 JOptionPane.showMessageDialog(null, scrollPane, "[ " + one + " ] to [ " + two + " ]",
                         JOptionPane.QUESTION_MESSAGE);
-
                 break;
+
+            case "Create User Balance Account":
+                // int accountID, String accountName, int rateID
+                userID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input user ID"));
+                rateID = Integer.parseInt(JOptionPane.showInputDialog(null, "Input rate ID to use"));
+                accountName = JOptionPane.showInputDialog(null, "Input name for account");
+                customerPin = JOptionPane.showInputDialog(null, "Input customer PIN");
+                customerAccountID = cont.getAccountByString(customerPin);
+                if (cont.createUserBalanceAccount(customerAccountID, accountName, rateID)) {
+                    JOptionPane.showMessageDialog(null, "Success!");
+                } else
+                    JOptionPane.showMessageDialog(null, "ERROR!");
+
             default:
                 System.out.println("Default outcome");
                 break;

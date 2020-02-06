@@ -36,11 +36,11 @@ public class Model {
                         .collect(Collectors.toList());
         return userTypeId;
     }
-    public String returnBalance(int accountID, String amountToInsert, int rateID) throws SQLException {
-        return rep.callBalanceChangeFromDB(accountID, amountToInsert, rateID);
-    }
+//    public String returnBalance(int accountID, String amountToInsert, int rateID) throws SQLException {
+//        return rep.callBalanceChangeFromDB(accountID, amountToInsert, rateID);
+//    }
 
-    public String returnBalance(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
+    public Boolean returnBalance(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
         return rep.callBalanceChangeFromDB(accountID,accountName,amountToInsert,rateID);
     }
     public double returnLoanBalance(int kundId) throws SQLException {
