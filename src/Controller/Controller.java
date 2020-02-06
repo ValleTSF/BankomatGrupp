@@ -1,8 +1,8 @@
 package Controller;
 
 import Model.Model;
+import Model.Pojos.Rate;
 import Model.Repository.SPSRepository;
-import Pojos.Rate;
 import View.ViewGui;
 import View.ViewGuiAdmin;
 
@@ -121,6 +121,10 @@ public class Controller {
     public Boolean createLoanForUser(int accountID, int loanAmount, int rateID) throws SQLException {
         return spsRepository.callCreateLoanForUserFromDB(accountID, loanAmount, rateID);
     }
+
+
+
+
 }
 
 

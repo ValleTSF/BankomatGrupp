@@ -1,7 +1,7 @@
 package View;
 
 import Controller.*;
-import Pojos.Rate;
+import Model.Pojos.Rate;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -245,19 +245,19 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 break;
 
             case "Edit Rate for Account":
-                JComboBox emailListForEditRateBalance = new JComboBox(cont.getDropDownEmail());
+                JComboBox emailListForEditRateBalance = new JComboBox(cont.getArrayListUserEmail());
                 JOptionPane.showMessageDialog(null, emailListForEditRateBalance, "Select customer",
                         JOptionPane.QUESTION_MESSAGE);
 
                 int getForEditRateBalance = emailListForEditRateBalance.getSelectedIndex();
-                String[] pickedEmailForEditRateBalance = cont.getDropDownEmail();
+                String[] pickedEmailForEditRateBalance = cont.getArrayListUserEmail();
                 String emailForEditRateBalance = pickedEmailForEditRateBalance[getForEditRateBalance];
 
-                JComboBox kontoListgetForEditRateBalance = new JComboBox(cont.getDropDownAccounts(cont.getAccountIdWhereEmail(emailForEditRateBalance)));
+                JComboBox kontoListgetForEditRateBalance = new JComboBox(cont.getDropDownBalanceAccounts(cont.getAccountIdWhereEmail(emailForEditRateBalance)));
                 JOptionPane.showMessageDialog(null, kontoListgetForEditRateBalance, "Select account",
                         JOptionPane.QUESTION_MESSAGE);
 
-                String[] accountStringArrayForEditRateBalance = cont.getDropDownAccounts(cont.getAccountIdWhereEmail(emailForEditRateBalance));
+                String[] accountStringArrayForEditRateBalance = cont.getDropDownBalanceAccounts(cont.getAccountIdWhereEmail(emailForEditRateBalance));
                 int getForEditRateBalance2 = kontoListgetForEditRateBalance.getSelectedIndex();
                 String pickedAccountStringForEditRateBalance2 = accountStringArrayForEditRateBalance[getForEditRateBalance2];
 
@@ -273,10 +273,10 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 break;
 
             case "Edit Rate for Loan":
-                JComboBox emailListForEditRateLoan = new JComboBox(cont.getDropDownEmail());
+                JComboBox emailListForEditRateLoan = new JComboBox(cont.getArrayListUserEmail());
                 JOptionPane.showMessageDialog(null, emailListForEditRateLoan, "Select customer", JOptionPane.QUESTION_MESSAGE);
                 int getForEditRateLoan = emailListForEditRateLoan.getSelectedIndex();
-                String[] pickedEmailgetForEditRateLoan = cont.getDropDownEmail();
+                String[] pickedEmailgetForEditRateLoan = cont.getArrayListUserEmail();
                 String emailgetForEditRateLoan = pickedEmailgetForEditRateLoan[getForEditRateLoan];
 
                 JComboBox rateListForEditRateLoan = new JComboBox(cont.getDropDownRate());
@@ -289,19 +289,19 @@ public class ViewGuiAdmin extends JFrame implements ActionListener {
                 break;
 
             case "Show Payment Plan":
-                JComboBox emailListForPaymentPlan = new JComboBox(cont.getDropDownEmail());
+                JComboBox emailListForPaymentPlan = new JComboBox(cont.getArrayListUserEmail());
                 JOptionPane.showMessageDialog(null, emailListForPaymentPlan, "Select customer", JOptionPane.QUESTION_MESSAGE);
                 int getForPaymentPlan = emailListForPaymentPlan.getSelectedIndex();
-                String[] pickedEmailForPaymentPlan = cont.getDropDownEmail();
+                String[] pickedEmailForPaymentPlan = cont.getArrayListUserEmail();
                 String emailForPaymentPlan = pickedEmailForPaymentPlan[getForPaymentPlan];
                 JOptionPane.showMessageDialog(null, "Summa att betala efter 1 år: \n" + cont.showPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlan)+""),"Payment Plan",3);
                 break;
 
             case "Edit Payment Plan":
-                JComboBox emailListForPaymentPlanEdit = new JComboBox(cont.getDropDownEmail());
+                JComboBox emailListForPaymentPlanEdit = new JComboBox(cont.getArrayListUserEmail());
                 JOptionPane.showMessageDialog(null, emailListForPaymentPlanEdit, "Select customer", JOptionPane.QUESTION_MESSAGE);
                 int getForPaymentPlanEdit = emailListForPaymentPlanEdit.getSelectedIndex();
-                String[] pickedEmailForPaymentPlanEdit = cont.getDropDownEmail();
+                String[] pickedEmailForPaymentPlanEdit = cont.getArrayListUserEmail();
                 String emailForPaymentPlanEdit = pickedEmailForPaymentPlanEdit[getForPaymentPlanEdit];
                 int paymentPlanEdit = Integer.parseInt(JOptionPane.showInputDialog("Input amount of years"));
                 JOptionPane.showMessageDialog(null, "Summa att betala efter " + paymentPlanEdit + " år: \n" + cont.editPaymentPlanByAccountId(cont.getAccountIdWhereEmail(emailForPaymentPlanEdit)+"",paymentPlanEdit),"Payment Plan",3);

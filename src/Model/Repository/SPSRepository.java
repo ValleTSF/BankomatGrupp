@@ -1,6 +1,7 @@
 package Model.Repository;
 
-import Pojos.Rate;
+
+import Model.Pojos.Rate;
 
 import java.io.FileInputStream;
 import java.sql.*;
@@ -175,6 +176,8 @@ public class SPSRepository {
     // Currency methods
 
     public String callBalanceChangeFromDB(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
+        return "bdaew";
+    }
     public List<Rate> getRates() throws SQLException {
         List<Rate> rateList = new ArrayList<>();
         String sqlQuery = "select * from rate";
@@ -206,6 +209,8 @@ public class SPSRepository {
             rs = pstmt.executeQuery();
         }
     }
+
+
     public void callChangeLoanRateFromDB(int accountID, int rateID) throws SQLException {
 
         String sqlQuery = "call sp_change_loan_rate_by_account_id(?,?)";
@@ -232,7 +237,6 @@ public class SPSRepository {
              PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
             ResultSet rs;
             pstmt.setInt(1, accountID);
-            pstmt.setString(2, accountName);
             pstmt.setInt(3, Integer.parseInt(amountToInsert));
             pstmt.setInt(4, rateID);
             rs = pstmt.executeQuery();
@@ -277,22 +281,22 @@ public class SPSRepository {
         }
 
     }
-            }
-        }
-        public double callSpGetLoanRateFromDB(String account_id) throws SQLException {
 
-            String sqlQuery = "call sp_get_rate_by_account_id(?,?)";
-            try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                    pro.getProperty("login"),
-                    pro.getProperty("password"));
-                 CallableStatement pstmt = con.prepareCall(sqlQuery)) {
 
-                pstmt.setString(1, account_id);
-                pstmt.registerOutParameter(2, Types.DOUBLE);
-                pstmt.execute();
-                return pstmt.getInt(2);
-            }
+    public double callSpGetLoanRateFromDB(String account_id) throws SQLException {
+
+        String sqlQuery = "call sp_get_rate_by_account_id(?,?)";
+        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
+                pro.getProperty("login"),
+                pro.getProperty("password"));
+             CallableStatement pstmt = con.prepareCall(sqlQuery)) {
+
+            pstmt.setString(1, account_id);
+            pstmt.registerOutParameter(2, Types.DOUBLE);
+            pstmt.execute();
+            return pstmt.getInt(2);
         }
+    }
 
     public List<String> getBalanceHistoryForCurrentMonth(int account_id) throws SQLException {
         List<String> his = new ArrayList<>();
@@ -504,42 +508,6 @@ public class SPSRepository {
             return returnInt;
         }
     }
-
-    public void callChangeBalanceRateFromDB(String balanceAccountName, int rateID) throws SQLException {
-
-        String sqlQuery = "call sp_change_balance_rate_by_account_name(?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
-            pstmt.setString(1, balanceAccountName);
-            pstmt.setInt(2, rateID);
-            rs = pstmt.executeQuery();
-
-            System.out.println(rs);
-
-        }
-    }
-
-    public void callChangeLoanRateFromDB(int accountID, int rateID) throws SQLException {
-
-        String sqlQuery = "call sp_change_balance_rate_by_account_name(?,?)";
-        try (Connection con = DriverManager.getConnection(pro.getProperty("connectionURL"),
-                pro.getProperty("login"),
-                pro.getProperty("password"));
-             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
-            ResultSet rs;
-            pstmt.setInt(1, accountID);
-            pstmt.setInt(2, rateID);
-            rs = pstmt.executeQuery();
-
-            System.out.println(rs);
-
-        }
-    }
-
-    public double callSpGetLoanRateFromDB(String account_id) throws SQLException {
 
 
     public static void main(String[] args) throws SQLException {

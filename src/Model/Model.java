@@ -1,11 +1,10 @@
 package Model;
 
 
+import Model.Pojos.Account;
+import Model.Pojos.Account_Balance;
+import Model.Pojos.Rate;
 import Model.Repository.*;
-import Pojos.Account;
-import Pojos.Account_Balance;
-import Pojos.Rate;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,8 @@ public class Model {
         return userTypeId;
     }
     public String returnBalance(int accountID, String amountToInsert, int rateID) throws SQLException {
-        return rep.callBalanceChangeFromDB(accountID,amountToInsert,rateID);
+        return rep.callBalanceChangeFromDB(accountID, amountToInsert, rateID);
+    }
 
     public String returnBalance(int accountID, String accountName, String amountToInsert, int rateID) throws SQLException {
         return rep.callBalanceChangeFromDB(accountID,accountName,amountToInsert,rateID);
